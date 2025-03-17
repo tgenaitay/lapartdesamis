@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine is Mine - Questionnaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a120b;
+            --text: #e5e5cb;
+            --accent: #d4af37;
+            --secondary: #3c2a21;
+            --hover: #654321;
+        }
+        
+        body {
+            background: linear-gradient(to top, var(--bg), #000);
+            color: var(--text);
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1, h2 {
+            font-family: "Cormorant Garamond", serif;
+            font-weight: 500;
+            font-style: normal;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+        
+        .question-group {
+            background: rgba(60, 42, 33, 0.3);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-group:hover {
+            background: rgba(60, 42, 33, 0.5);
+        }
+        
+        label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        input[type="radio"],
+        input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .custom-radio {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            height: 20px;
+            width: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+        }
+        
+        input:checked ~ .custom-radio {
+            background: var(--accent);
+        }
+        
+        .rating-scale {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .rating-btn {
+            background: var(--secondary);
+            border: 1px solid var(--accent);
+            color: var(--text);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .rating-btn.active {
+            background: var(--accent);
+            color: var(--bg);
+        }
+        
+        button[type="submit"] {
+            background: linear-gradient(to right, var(--accent), #b8860b);
+            color: var(--bg);
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        button[type="submit"]:hover {
+            transform: scale(1.05);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        input[type="text"], textarea {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--text);
+            padding: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 5px;
+        }
+        
+        .required::after {
+            content: "*";
+            color: #ff4444;
+            margin-left: 3px;
+        }
+        
+        .ranking-system {
+            display: flex;
+            gap: 15px;
+            flex-direction: column;
+            margin: 20px 0;
+        }
+        
+        .ranking-item {
+            background: var(--secondary);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        
+        .rank-select {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .rank-select option {
+            background: var(--bg);
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍷 Wine is Mine</h1>
+        <div class="intro">
+            <p>Bienvenue !</p>
+            <p>Nous vous proposons de remplir ce court questionnaire pour comprendre vos goûts et habitudes.</p>
+        </div>
+        
+        <form id="wineForm">
+            <!-- Question 1 -->
+            <div class="question-group">
+                <h2 class="required">1. Comment pourriez-vous qualifier vos connaissances en vin ?</h2>
+                <label>
+                    <input type="radio" name="1.niveau" value="debutant" required>
+                    <span class="custom-radio"></span>
+                    a. Débutant, je n'y connais pas grand-chose et j'aimerais en apprendre plus.
+                </label>
+                <label>
+                    <input type="radio" name="1.niveau" value="connaisseur" required>
+                    <span class="custom-radio"></span>
+                    b. Connaisseur, je m'y intéresse et j'ai de bonnes bases. J'aimerais diversifier mes connaissances.
+                </label>
+                <label>
+                    <input type="radio" name="1.niveau" value="expert" required>
+                    <span class="custom-radio"></span>
+                    c. Expert, je maîtrise les subtilités du vin, des méthodes de vinifications à la diversité des régions viticoles.
+                </label>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-group">
+                <h2 class="required">2. À quelle fréquence ouvrez-vous une bouteille de vin ?</h2>
+                <label>
+                    <input type="radio" name="2.frequence" value="quotidiennement" required>
+                    <span class="custom-radio"></span>
+                    a. Quotidiennement
+                </label>
+                <label>
+                    <input type="radio" name="2.frequence" value="regulierement" required>
+                    <span class="custom-radio"></span>
+                    b. Régulièrement, 2 à 3 fois par semaine
+                </label>
+                <label>
+                    <input type="radio" name="2.frequence" value="occasionnellement" required>
+                    <span class="custom-radio"></span>
+                    c. Occasionnellement
+                </label>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-group">
+                <h2>3. Quels sont les moments pendant lesquels vous aimez ouvrir une bouteille de vin chez vous ?</h2>
+                <label>
+                    <input type="checkbox" name="3.moments" value="apero">
+                    <span class="custom-radio"></span>
+                    a. Lors d'apéros
+                </label>
+                <label>
+                    <input type="checkbox" name="3.moments" value="repas_semaine">
+                    <span class="custom-radio"></span>
+                    b. Pendant les repas en semaine
+                </label>
+                <label>
+                    <input type="checkbox" name="3.moments" value="repas_weekend">
+                    <span class="custom-radio"></span>
+                    c. Pendant les repas le weekend
+                </label>
+                <label>
+                    <input type="checkbox" name="3.moments" value="soiree">
+                    <span class="custom-radio"></span>
+                    d. Lors de soirées entre amis
+                </label>
+                <label>
+                    <input type="checkbox" name="3.moments" value="romantique">
+                    <span class="custom-radio"></span>
+                    e. Pour un moment romantique
+                </label>
+                <label>
+                    <input type="checkbox" name="3.moments" value="detente">
+                    <span class="custom-radio"></span>
+                    f. Pour un moment de détente
+                </label>
+                <label>
+                    <input type="checkbox" name="3.moments" value="autre">
+                    <span class="custom-radio"></span>
+                    g. Autre - Précisez :
+                </label>
+                <input type="text" name="autre_moment" class="hidden">
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-group">
+                <h2 class="required">4. Classez ces 4 familles de vins</h2>
+                <div class="ranking-system" id="wineRanking">
+                    <div class="ranking-item" data-value="blanc">Vin Blanc tranquille</div>
+                    <div class="ranking-item" data-value="rouge">Vin Rouge</div>
+                    <div class="ranking-item" data-value="petillant">Vin Pétillant</div>
+                    <div class="ranking-item" data-value="rose">Vin Rosé</div>
+                </div>
+                <input type="hidden" name="4.classement" id="wineOrder">
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question-group">
+                <h2>5. Préférences de goût</h2>
+                <p>Cette question permettra de mieux cerner vos goûts et donc de cibler les vins les plus adaptés à vous. Si les critères ci-dessous ne vous évoquent rien ou pas grand chose, aucune inquiétude ! Nous aurons tout le temps d'en discuter ensemble par la suite.</p>
+                
+                <div class="wine-preferences">
+                    <div class="wine-type">
+                        <h3>Vins Rouges</h3>
+                        <p>Sur une échelle de 1 à 5 où 1 signifie pas du tout et 5 énormément, indiquez à quel point vous aimez ces différents styles de vin :</p>
+                        <div class="rating-item">
+                            <span>a. Fruité (ex : notes de fraise, framboise, cerise, cassis, mûres)</span>
+                            <div class="rating-scale" data-name="5a.rouge_fruite">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>b. Épicé (ex : notes de poivre noir ou blanc, cannelle)</span>
+                            <div class="rating-scale" data-name="5b.rouge_epice">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>c. Boisé (ex : notes toastées, pain grillé, vanille)</span>
+                            <div class="rating-scale" data-name="5c.rouge_boise">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>d. Tannique (effet asséchant en bouche)</span>
+                            <div class="rating-scale" data-name="5d.rouge_tannique">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wine-type">
+                        <h3>Vins Blancs</h3>
+                        <p>Sur une échelle de 1 à 5 où 1 signifie pas du tout et 5 énormément, indiquez à quel point vous aimez ces différents styles de vin :</p>
+
+                        <div class="rating-item">
+                            <span>a. Fruité (ex : notes de pomme, poire, agrumes, fruits exotiques)</span>
+                            <div class="rating-scale" data-name="5e.blanc_fruite">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>b. Minéral (ex : notes salines, pierre à fusil, crayeux)</span>
+                            <div class="rating-scale" data-name="5f.blanc_mineral">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>c. Beurré, toasté (ex : notes crémeuses, de noisettes, de biscuit)</span>
+                            <div class="rating-scale" data-name="5g.blanc_beurre">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>d. Boisé (ex : notes vanillées)</span>
+                            <div class="rating-scale" data-name="5d.blanc_boise">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>e. Sec vs sucré (ex : très sec, plus rond et gras, sucré, très sucré)</span>
+                            <div class="rating-scale" data-name="5e.blanc_sucrosite">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="wine-type">
+                        <h3>Vins Pétillants</h3>
+                        <p>Sur une échelle de 1 à 5 où 1 signifie pas du tout et 5 énormément, indiquez à quel point vous aimez ces différents styles de vin :</p>
+
+                        <div class="rating-item">
+                            <span>a. Fruité (ex : notes de pomme, poire, agrumes, fruits exotiques)</span>
+                            <div class="rating-scale" data-name="5f.petillant_fruite">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>b. Brioché, toasté (ex : pain grillé, noisette, levure, biscuit)</span>
+                            <div class="rating-scale" data-name="5g.petillant_brioche">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>c. Minéral (ex : notes salines, pierre à fusil, crayeux)</span>
+                            <div class="rating-scale" data-name="5h.petillant_mineral">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>d. Vif et acide (sensation de fraîcheur et tension en bouche)</span>
+                            <div class="rating-scale" data-name="5i.petillant_acidite">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>e. Dosage (Sec vs Sucré) (préférence pour un extra-brut, brut, demi-sec…)</span>
+                            <div class="rating-scale" data-name="5j.petillant_dosage">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wine-type">
+                        <h3>Vins Rosés</h3>
+                        <p>Sur une échelle de 1 à 5 où 1 signifie pas du tout et 5 énormément, indiquez à quel point vous aimez ces différents styles de vin :</p>
+                        <div class="rating-item">
+                            <span>a. Fruité</span>
+                            <div class="rating-scale" data-name="5k.rose_fruite">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>b. Floral</span>
+                            <div class="rating-scale" data-name="5l.rose_floral">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <span>c. Minéral</span>
+                            <div class="rating-scale" data-name="5m.rose_mineral">
+                                <button type="button" class="rating-btn" data-value="1">1</button>
+                                <button type="button" class="rating-btn" data-value="2">2</button>
+                                <button type="button" class="rating-btn" data-value="3">3</button>
+                                <button type="button" class="rating-btn" data-value="4">4</button>
+                                <button type="button" class="rating-btn" data-value="5">5</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Conditional Questions -->
+            <!-- Beginner Questions -->
+            <div class="question-group debutant-only hidden">
+                <h3>Questions pour consommateurs débutants</h3>
+                <div class="question-section">
+                    <h2>6. Parmi les régions ci-dessous, pouvez-vous sélectionner 2 de vos régions viticoles préférées ? Ou que vous consommez le plus souvent ?</h2>
+                    <p>(Sélectionnez jusqu'à 2 options)</p>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="bourgogne">
+                        <span class="custom-radio"></span>
+                        Bourgogne
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="bordeaux">
+                        <span class="custom-radio"></span>
+                        Bordeaux
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="rhone">
+                        <span class="custom-radio"></span>
+                        Vallée du Rhône
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="beaujolais">
+                        <span class="custom-radio"></span>
+                        Beaujolais
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="provence">
+                        <span class="custom-radio"></span>
+                        Provence
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="champagne">
+                        <span class="custom-radio"></span>
+                        Champagne
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="alsace">
+                        <span class="custom-radio"></span>
+                        Alsace
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="loire">
+                        <span class="custom-radio"></span>
+                        Vallée de la Loire
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="languedoc">
+                        <span class="custom-radio"></span>
+                        Languedoc-Roussillon
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.debutant_regions" value="none">
+                        <span class="custom-radio"></span>
+                        Je n'ai pas aujourd'hui de régions préférées
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>7. Où avez-vous l'habitude d'acheter du vin ?</h2>
+                    <label>
+                        <input type="checkbox" name="7.achat_emplacement" value="caviste">
+                        <span class="custom-radio"></span>
+                        Caviste
+                    </label>
+                    <label>
+                        <input type="checkbox" name="7.achat_emplacement" value="supermarket">
+                        <span class="custom-radio"></span>
+                        Grande distribution
+                    </label>
+                    <label>
+                        <input type="checkbox" name="7.achat_emplacement" value="direct">
+                        <span class="custom-radio"></span>
+                        En direct propriété
+                    </label>
+                    <label>
+                        <input type="checkbox" name="7.achat_emplacement" value="foires">
+                        <span class="custom-radio"></span>
+                        Foires aux vins
+                    </label>
+                    <label>
+                        <input type="checkbox" name="7.achat_emplacement" value="internet">
+                        <span class="custom-radio"></span>
+                        Internet
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>8. Quel est votre budget moyen pour une bouteille à ouvrir le week-end entre amis ?</h2>
+                    <label>
+                        <input type="radio" name="8.budget_weekend" value="<15">
+                        <span class="custom-radio"></span>
+                        Moins de 15€
+                    </label>
+                    <label>
+                        <input type="radio" name="8.budget_weekend" value="15-30">
+                        <span class="custom-radio"></span>
+                        Entre 15 et 30€
+                    </label>
+                    <label>
+                        <input type="radio" name="8.budget_weekend" value="30-60">
+                        <span class="custom-radio"></span>
+                        Entre 30 et 60€
+                    </label>
+                    <label>
+                        <input type="radio" name="8.budget_weekend" value=">60">
+                        <span class="custom-radio"></span>
+                        Plus de 60€
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>9. Où avez-vous l'habitude de stocker vos vins ?</h2>
+                    <textarea name="9.stockage" rows="4"></textarea>
+                </div>
+                <div class="question-section">
+                    <h2>10. Avez-vous en tête un souvenir particulier autour d'une bouteille de vin. En quoi ce souvenir est-il mémorable ?</h2>
+                    <textarea name="10.memoire" rows="4"></textarea>
+                </div>
+            </div>
+            
+            <!-- Connoisseur Questions -->
+            <div class="question-group connaisseur-only hidden">
+                <h3>Questions pour consommateurs connaisseurs</h3>
+                <div class="question-section">
+                    <h2>6. Quelles sont, parmi celles listées ci-dessous, vos 2 régions viticoles préférées ?</h2>
+                    <p>(Sélectionnez jusqu'à 2 options)</p>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="bourgogne">
+                        <span class="custom-radio"></span>
+                        Bourgogne
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="bordeaux">
+                        <span class="custom-radio"></span>
+                        Bordeaux
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="rhone">
+                        <span class="custom-radio"></span>
+                        Vallée du Rhône
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="beaujolais">
+                        <span class="custom-radio"></span>
+                        Beaujolais
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="provence">
+                        <span class="custom-radio"></span>
+                        Provence
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="champagne">
+                        <span class="custom-radio"></span>
+                        Champagne
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="alsace">
+                        <span class="custom-radio"></span>
+                        Alsace
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="loire">
+                        <span class="custom-radio"></span>
+                        Vallée de la Loire
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="languedoc">
+                        <span class="custom-radio"></span>
+                        Languedoc-Roussillon
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.connaisseur_regions" value="autres">
+                        <span class="custom-radio"></span>
+                        Autres (Corse ou Sud-Ouest par exemple)
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>7. Parmi les 2 régions sélectionnées, une appellation (AOC) en particulier a-t-elle une place de choix dans votre cave ? Éventuellement un domaine ou un château que vous appréciez tout particulièrement ?</h2>
+                    <textarea name="7.favori_aoc_domain_connaisseur" rows="4"></textarea>
+                </div>
+                <div class="question-section">
+                    <h2>8. Seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?</h2>
+                    <label>
+                        <input type="radio" name="8.decouvrir_nouvelle_regions" value="oui">
+                        <span class="custom-radio"></span>
+                        Oui
+                    </label>
+                    <label>
+                        <input type="radio" name="8.decouvrir_nouvelle_regions" value="non">
+                        <span class="custom-radio"></span>
+                        Non
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>9. Pour un vin de garde, quel serait votre budget moyen ?</h2>
+                    <label>
+                        <input type="radio" name="9.budget_garde" value="20-50">
+                        <span class="custom-radio"></span>
+                        Entre 20 et 50€
+                    </label>
+                    <label>
+                        <input type="radio" name="9.budget_garde" value="50-100">
+                        <span class="custom-radio"></span>
+                        Entre 50 et 100€
+                    </label>
+                    <label>
+                        <input type="radio" name="9.budget_garde" value=">100">
+                        <span class="custom-radio"></span>
+                        Plus de 100€
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>10. Où avez-vous l'habitude de stocker vos vins ?</h2>
+                    <textarea name="10.stockage_connaisseur" rows="4"></textarea>
+                </div>
+                <div class="question-section">
+                    <h2>11. Avez-vous en tête un souvenir particulier autour d'une bouteille de vin. En quoi ce souvenir est-il mémorable ?</h2>
+                    <textarea name="11.memoire_connaisseur" rows="4"></textarea>
+                </div>
+            </div>
+            
+            <!-- Expert Questions -->
+            <div class="question-group expert-only hidden">
+                <h3>Questions pour consommateurs experts</h3>
+                <div class="question-section">
+                    <h2>6. Quelles sont, parmi celles listées ci-dessous, vos 2 régions viticoles préférées ?</h2>
+                    <p>(Sélectionnez jusqu'à 2 options)</p>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="bourgogne">
+                        <span class="custom-radio"></span>
+                        Bourgogne
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="bordeaux">
+                        <span class="custom-radio"></span>
+                        Bordeaux
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="rhone">
+                        <span class="custom-radio"></span>
+                        Vallée du Rhône
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="beaujolais">
+                        <span class="custom-radio"></span>
+                        Beaujolais
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="provence">
+                        <span class="custom-radio"></span>
+                        Provence
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="champagne">
+                        <span class="custom-radio"></span>
+                        Champagne
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="alsace">
+                        <span class="custom-radio"></span>
+                        Alsace
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="loire">
+                        <span class="custom-radio"></span>
+                        Vallée de la Loire
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="languedoc">
+                        <span class="custom-radio"></span>
+                        Languedoc-Roussillon
+                    </label>
+                    <label>
+                        <input type="checkbox" name="6.expert_regions" value="other">
+                        <span class="custom-radio"></span>
+                        Autres (Corse ou Sud-Ouest par exemple)
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>7. Parmi les 2 régions sélectionnées, quelle appellation (AOC) en particulier a-t-elle une place de choix dans votre cave ? Quels domaines ou châteaux appréciez-vous tout particulièrement ?</h2>
+                    <textarea name="7.favori_aoc_domain_expert" rows="4"></textarea>
+                </div>
+                <div class="question-section">
+                    <h2>8. Pour un vin de garde, quel serait votre budget moyen ?</h2>
+                    <label>
+                        <input type="radio" name="8.budget_garde_expert" value="20-50">
+                        <span class="custom-radio"></span>
+                        Entre 20 et 50€
+                    </label>
+                    <label>
+                        <input type="radio" name="8.budget_garde_expert" value="50-100">
+                        <span class="custom-radio"></span>
+                        Entre 50 et 100€
+                    </label>
+                    <label>
+                        <input type="radio" name="8.budget_garde_expert" value=">100">
+                        <span class="custom-radio"></span>
+                        Plus de 100€
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>9. Achetez-vous du vin dans une démarche d'investissement ou de constitution de patrimoine ?</h2>
+                    <label>
+                        <input type="radio" name="9.investissement" value="oui">
+                        <span class="custom-radio"></span>
+                        Oui
+                    </label>
+                    <label>
+                        <input type="radio" name="9.investissement" value="non">
+                        <span class="custom-radio"></span>
+                        Non
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>10. Avez-vous des bouteilles en cave que vous souhaiteriez vendre pour libérer de la place et les remplacer par d'autres flacons ?</h2>
+                    <label>
+                        <input type="radio" name="10.vendre_bouteilles" value="oui">
+                        <span class="custom-radio"></span>
+                        Oui
+                    </label>
+                    <label>
+                        <input type="radio" name="10.vendre_bouteilles" value="non">
+                        <span class="custom-radio"></span>
+                        Non
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>11. Avez-vous déjà acheté des vins de Bordeaux en primeurs ?</h2>
+                    <label>
+                        <input type="radio" name="11.primeurs" value="yes">
+                        <span class="custom-radio"></span>
+                        Oui
+                    </label>
+                    <label>
+                        <input type="radio" name="11.primeurs" value="no">
+                        <span class="custom-radio"></span>
+                        Non
+                    </label>
+                </div>
+                <div class="question-section">
+                    <h2>12. Pouvez-vous nous raconter quelles bouteilles vous ont particulièrement marqué et pourquoi ?</h2>
+                    <textarea name="12.bouteilles_memorables" rows="4"></textarea>
+                </div>
+                <div class="question-section">
+                    <h2>13. Dites en quelques mots quel serait votre cave idéale ? (région dominante, % vins de garde vs prêt à boire, % rouge vs blanc, durée de garde maximum)</h2>
+                    <textarea name="13.cave_ideale" rows="4"></textarea>
+                </div>
+            </div>
+            
+            <button type="submit">Soumettre le questionnaire</button>
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Conditional Logic for niveau level questions
+            const level = document.querySelectorAll('input[name="1.niveau"]');
+            const toggleSections = (level) => {
+                document.querySelectorAll('.debutant-only, .connaisseur-only, .expert-only')
+                .forEach(el => el.classList.add('hidden'));
+                
+                if(level === 'debutant') {
+                    document.querySelectorAll('.debutant-only').forEach(el => el.classList.remove('hidden'));
+                } else if(level === 'connaisseur') {
+                    document.querySelectorAll('.connaisseur-only').forEach(el => el.classList.remove('hidden'));
+                } else if(level === 'expert') {
+                    document.querySelectorAll('.expert-only').forEach(el => el.classList.remove('hidden'));
+                }
+            };
+            
+            level.forEach(radio => {
+                radio.addEventListener('change', (e) => toggleSections(e.target.value));
+            });
+            
+            // Rating System for wine preferences
+            document.querySelectorAll('.rating-scale').forEach(scale => {
+                const buttons = scale.querySelectorAll('.rating-btn');
+                const name = scale.dataset.name;
+                
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Remove active class from all buttons in this scale
+                        buttons.forEach(b => b.classList.remove('active'));
+                        // Add active class to clicked button
+                        this.classList.add('active');
+                        // Create hidden input to store the value
+                        let input = document.querySelector(`input[name="${name}"]`);
+                        if (!input) {
+                            input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = name;
+                            document.getElementById('wineForm').appendChild(input);
+                        }
+                        input.value = this.dataset.value;
+                    });
+                });
+            });
+            
+            // Shuffle function to randomize array elements
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+            
+            // Ranking System for wine types
+            const wineRanking = document.getElementById('wineRanking');
+            const rankingItems = document.querySelectorAll('.ranking-item');
+            
+            // Shuffle the ranking items
+            const shuffledItems = shuffleArray([...rankingItems]);
+            shuffledItems.forEach(item => {
+                wineRanking.appendChild(item);
+                item.setAttribute('draggable', 'true');
+                item.addEventListener('dragstart', function() {
+                    this.classList.add('dragging');
+                });
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                    updateWineOrder();
+                });
+            });
+            
+            wineRanking.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(wineRanking, e.clientY);
+                const draggable = document.querySelector('.dragging');
+                if (afterElement) {
+                    wineRanking.insertBefore(draggable, afterElement);
+                } else {
+                    wineRanking.appendChild(draggable);
+                }
+            });
+            
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.ranking-item:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+            
+            function updateWineOrder() {
+                const order = Array.from(document.querySelectorAll('.ranking-item'))
+                .map(item => item.dataset.value);
+                document.getElementById('wineOrder').value = order.join(',');
+            }
+            
+            // Initialize the wine order
+            updateWineOrder();
+            
+            // Other interactions - Show/hide text input for 'autre' moment
+            document.querySelector('input[name="3.moments"][value="autre"]').addEventListener('change', function(e) {
+                document.querySelector('input[name="autre_moment"]').classList.toggle('hidden', !e.target.checked);
+            });
+            
+            // Limit region selections to 2 checkboxes
+            function limitCheckboxes(checkboxes, limit) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+                        if (checkedCount > limit) {
+                            this.checked = false;
+                            alert(`Vous ne pouvez sélectionner que ${limit} options.`);
+                        }
+                    });
+                });
+            }
+            
+            limitCheckboxes(document.querySelectorAll('input[name="6.debutant_regions"]'), 2);
+            limitCheckboxes(document.querySelectorAll('input[name="6.connaisseur_regions"]'), 2);
+            limitCheckboxes(document.querySelectorAll('input[name="6.expert_regions"]'), 2);
+            
+            // Add loading container after the form
+            const loadingContainer = document.createElement('div');
+            loadingContainer.id = 'loading-container';
+            loadingContainer.style.display = 'none';
+            loadingContainer.innerHTML = `
+                <div class="loading-spinner"></div>
+                <div class="loading-status"></div>
+            `;
+            document.getElementById('wineForm').after(loadingContainer);
+
+            // Add styles for loading animation
+            const style = document.createElement('style');
+            style.textContent = `
+                #loading-container {
+                    text-align: center;
+                    margin-top: 20px;
+                    padding: 20px;
+                }
+                .loading-spinner {
+                    border: 4px solid rgba(212, 175, 55, 0.3);
+                    border-radius: 50%;
+                    border-top: 4px solid var(--accent);
+                    width: 40px;
+                    height: 40px;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 15px;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                .loading-status {
+                    color: var(--accent);
+                    font-family: "Cormorant Garamond", serif;
+                    font-size: 1.2em;
+                }
+                .loading-error {
+                    color: #ff4444;
+                    margin-top: 10px;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Form Submission with validation
+            document.getElementById('wineForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitButton = this.querySelector('button[type="submit"]');
+                submitButton.style.display = 'none';
+                
+                const loadingContainer = document.getElementById('loading-container');
+                const loadingStatus = loadingContainer.querySelector('.loading-status');
+                
+                // Show loading container
+                loadingContainer.style.display = 'block';
+                
+                // Scroll to loading container
+                loadingContainer.scrollIntoView({ behavior: 'smooth' });
+                
+                // Update status function
+                const updateStatus = (message) => {
+                    loadingStatus.textContent = message;
+                };
+                
+                // Show error function
+                const showError = (message) => {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'loading-error';
+                    errorDiv.textContent = message;
+                    loadingStatus.after(errorDiv);
+                    setTimeout(() => {
+                        loadingContainer.style.display = 'none';
+                        errorDiv.remove();
+                    }, 5000);
+                };
+
+                try {
+                    updateStatus('Lecture de vos habitudes et de vos préférences...');
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Validate all required fields
+                const requiredSections = document.querySelectorAll('.required');
+                for (const section of requiredSections) {
+                    // Get the question number and title for error message
+                    const questionTitle = section.textContent.trim();
+                    
+                    // Find the parent question group
+                    const questionGroup = section.closest('.question-group');
+                    
+                    // Check radio buttons
+                    const radioInputs = questionGroup.querySelectorAll('input[type="radio"]');
+                    if (radioInputs.length > 0) {
+                        const radioName = radioInputs[0].name;
+                        if (!document.querySelector(`input[name="${radioName}"]:checked`)) {
+                            throw new Error(`Veuillez répondre à la question: ${questionTitle}`);
+                        }
+                    }
+                    
+                    // Check checkboxes (at least one should be checked)
+                    const checkboxes = questionGroup.querySelectorAll('input[type="checkbox"]');
+                    if (checkboxes.length > 0) {
+                        const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+                        if (checkedBoxes.length === 0) {
+                            const errorMessage = `Veuillez sélectionner au moins une option pour: ${questionTitle}`;
+                            showError(errorMessage);
+                            throw new Error(errorMessage);
+                        }
+                    }
+                    
+                    // Check rating scales
+                    const ratingScales = questionGroup.querySelectorAll('.rating-scale');
+                    for (const scale of ratingScales) {
+                        if (!scale.querySelector('.rating-btn.active')) {
+                            throw new Error(`Veuillez donner une note pour tous les critères de: ${questionTitle}`);
+                        }
+                    }
+                }
+                
+                // Validate wine ranking specifically
+                if (!document.getElementById('wineOrder').value) {
+                    throw new Error('Veuillez classer les familles de vins.');
+                }
+
+                updateStatus('Recherche d\'excellents vins pour votre cave...');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Collect form data
+                const formData = new FormData(this);
+                
+                // Get the selected experience level
+                const selectedLevel = document.querySelector('input[name="1.niveau"]:checked').value;
+                
+                // Create an array to store entries
+                const entries = Array.from(formData.entries());
+                
+                // Filter out entries based on experience level
+                const filteredEntries = entries.filter(([key]) => {
+                    if (selectedLevel === 'debutant') {
+                        return !key.includes('_connaisseur') && !key.includes('_expert');
+                    } else if (selectedLevel === 'connaisseur') {
+                        return !key.includes('_debutant') && !key.includes('_expert');
+                    } else if (selectedLevel === 'expert') {
+                        return !key.includes('_debutant') && !key.includes('_connaisseur');
+                    }
+                    return true;
+                });
+                
+                // Create a structured object with question-answer pairs
+                const formattedData = {};
+                const allQuestionGroups = document.querySelectorAll('.question-group');
+                
+                allQuestionGroups.forEach(group => {
+                    // Process all question sections within the group
+                    const sections = group.querySelectorAll('.question-section, h2');
+                    
+                    sections.forEach(section => {
+                        let questionTitle = '';
+                        let inputs;
+                        
+                        if (section.tagName.toLowerCase() === 'h2') {
+                            questionTitle = section.textContent.trim();
+                            inputs = section.parentElement.querySelectorAll('input, textarea, select');
+                        } else {
+                            questionTitle = section.querySelector('h2')?.textContent.trim();
+                            if (!questionTitle) return;
+                            inputs = section.querySelectorAll('input, textarea, select');
+                        }
+                        
+                        if (inputs.length === 0) return;
+                        
+                        // Handle different input types
+                        let answer = '';
+                        if (inputs[0].type === 'radio') {
+                            const checkedInput = Array.from(inputs).find(input => input.checked);
+                            answer = checkedInput ? checkedInput.value : '';
+                        } else if (inputs[0].type === 'checkbox') {
+                            const checkedBoxes = Array.from(inputs).filter(input => input.checked);
+                            answer = checkedBoxes.map(cb => cb.value).join(', ');
+                        } else if (inputs[0].tagName.toLowerCase() === 'textarea') {
+                            answer = inputs[0].value;
+                        }
+                        
+                        if (answer) {
+                            formattedData[questionTitle] = answer;
+                        }
+                    });
+                });
+
+                // Add wine ranking if present (Question 4)
+                const wineOrder = document.getElementById('wineOrder');
+                if (wineOrder && wineOrder.value) {
+                    formattedData['4. Classement'] = wineOrder.value;
+                }
+
+                // Add wine preferences ratings from section 5
+                const winePreferences = {};
+                document.querySelectorAll('.wine-type').forEach(wineType => {
+                    const wineCategory = wineType.querySelector('h3').textContent.trim();
+                    const ratings = {};
+                    
+                    wineType.querySelectorAll('.rating-item').forEach(item => {
+                        const criterion = item.querySelector('span').textContent.trim();
+                        const scale = item.querySelector('.rating-scale');
+                        const activeBtn = scale.querySelector('.rating-btn.active');
+                        if (activeBtn) {
+                            ratings[criterion] = activeBtn.dataset.value;
+                        }
+                    });
+                    
+                    if (Object.keys(ratings).length > 0) {
+                        winePreferences[wineCategory] = ratings;
+                    }
+                });
+                
+                if (Object.keys(winePreferences).length > 0) {
+                    formattedData['5. Préférences de goût'] = winePreferences;
+                }
+                
+                updateStatus('Analyse des résultats...');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // Send data to server
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formattedData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur dans la recherche, HTTP status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                updateStatus('Une pré-selection est prête!');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Redirect to results page with submissionId
+                window.location.href = `results.html?submissionId=${data.submissionId}`;
+                
+                } catch (error) {
+                    showError(error.message);
+                    submitButton.style.display = 'block';
+                    loadingContainer.style.display = 'none';
+                    return;
+                }
+                
+                // Log formatted data to console
+                console.log(formattedData);
+            });
+        });
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+.vercel
+
+# Exclude data and input directories
+inputs/
+data/
+
+# Exclude environment variables
+.env
+
+.DS_Store
+
+/server/node_modules
