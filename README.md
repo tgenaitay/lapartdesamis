@@ -1,20 +1,23 @@
 # Wine is Mine 🇫🇷🍷
 
 A web application to query tastes from wine enthusiasts, and fetch a selection of great wines from our catalog.
-Currently using Together AI's free endpoint for Llama 3.3.
+Currently using Together AI's free endpoint for consuming Llama 3.3.
 
 ## Features
 
 - Server-side processing with Node.js
 - Static file serving for frontend assets
-- LLM integration for intelligent processing of user input
-- Function call to Supabase for querying
-- Data storage in Supabase
+- LLM integration for intelligent transformation of user input into filters
+- Function call to Supabase for querying best wines
+- Scoring based on user's preferences and WIM notes
+- Data storage all in Supabase
 
 ## Prerequisites
 
 - Node.js
 - npm
+- Supabase
+- Wine data :) 
 
 ## Setup
 
@@ -34,7 +37,7 @@ SUPABASE_KEY=xx
 
 ## Development
 
-To run the development server:
+To run the development server (nodemon used for hot reload):
 
 ```bash
 cd server
@@ -61,8 +64,7 @@ All feedback welcome.
 
 ## Known issues
 
-- Llama 3.3 randomly outputs a shaky native function call in its content instead of a tool call
-- 
+- Llama 3.3 randomly outputs a malformed native function call in its content instead of a regular tool call. Happens 1 out of 5 times. Moving away from Llama to e.g Gemini should make it more stable.
 
 ## Wine Selection Logic 🍇
 
