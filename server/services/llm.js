@@ -26,7 +26,8 @@ class LLMService {
                             filters: { 
                                 type: "object", 
                                 properties: { 
-                                    regions: { type: "array", items: { type: "string" } }, 
+                                    regions: { type: "array", items: { type: "string" } },
+                                    more_regions: { type: "boolean" }, 
                                     prix_max: { type: "number" }, 
                                     prix_min: { type: "number" }, 
                                     appellations: { type: "array", items: { type: "string" } }, 
@@ -82,8 +83,6 @@ class LLMService {
                 ],
                 temperature: 1,
                 max_tokens: null,
-                top_p: 0.7,
-                top_k: 50,
                 repetition_penalty: 1,
                 stop: ["<|eot_id|>","<|eom_id|>"],
                 stream: false,
@@ -104,7 +103,7 @@ class LLMService {
                     success: true
                 };
             } 
-            // Check for function call embedded in content (Together.xyz format)
+            // Check for function call embedded in content (Native Llama)
             else if (message.content && message.content.includes('<function=query_wines>')) {
                 const functionMatch = message.content.match(/<function=query_wines>(.*?)<\/function>/s);
                 if (functionMatch && functionMatch[1]) {
@@ -162,7 +161,9 @@ class LLMService {
            "   - De la question 7 :\n" +
            "     - Divisez la réponse par des virgules. Traitez les appellations (par exemple, \"Meursault\") et les domaines (par exemple, \"Domaine de Terrebrune\") séparément, et retournez-les comme tableaux (ex. [\"Meursault\"] et [\"Domaine de Terrebrune\"]). \n" +
            "     - Si la réponse est vide ou n'a pas de sens, définissez `appellations` et `domaines` comme des tableaux vides.\n" +
-           "   - De la question 8, analysez la fourchette de budget (par exemple, \"50-100\") en `prix_min` et `prix_max`.\n" +
+           "   - De la question 8/9, analysez la fourchette de budget (par exemple, \"50-100\") en `prix_min` et `prix_max`.\n" +
+           "   - Le filtre 'more_regions' corresponds à la question 8 (connaisseurs) 'seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?' utilisez un booleen TRUE pour la réponse oui et FALSE pour non"+
+           "   - Par defaut, 'more_regions' est toujours TRUE, sauf si l'utilisateur connaisseur a décidé que non" +
            "   - Omettez tout filtre non spécifié ou non pertinent.\n\n" +
            "2. **Poids des couleurs (color_weights)** :\n" +
            "   - De la question 4 (\"Classement\", par exemple, \"rouge,petillant,blanc,rose\"), attribuez des poids :\n" +
@@ -182,6 +183,7 @@ class LLMService {
         //    "{\n" +
            "  \"filters\": {\n" +
            "    \"regions\": [\"bourgogne\", \"provence\"],\n" +
+           "    \"more_regions\": TRUE,\n" +
            "    \"appellations\": [\"Meursault\"],\n" +
            "    \"domaines\": [\"Domaine de Terrebrune\"],\n" +
            "    \"prix_min\": 50,\n" +
@@ -215,7 +217,7 @@ class LLMService {
             // Add regions to OR conditions
             if (filters.regions && Array.isArray(filters.regions) && filters.regions.length > 0) {
                 filters.regions.forEach(region => {
-                    filterConditions.push({ region: { eq: region } });
+                    filterConditions.push({ region: { ilike: `%${region}%` } });
                 });
             }
             
@@ -262,10 +264,9 @@ class LLMService {
             }
             
             let allWines = [...prioritizedWines];
-            
-            // If we have fewer than 20 wines, get additional wines without the specific filters
-            if (allWines.length < 20) {
-                // Second query: Get additional wines to reach 20 total
+            // If allowed to expand regional search OR if search was way too narrow to get 10 wines, get additional wines without the specific filters
+            if (filters.more_regions === true || prioritizedWines.length < 10) {
+                // Second query: Get additional wines
                 // We'll still respect price filters but ignore the specific region/appellation/domaine filters
                 let fallbackQuery = supabase.from('wines').select('*');
                 
@@ -284,8 +285,8 @@ class LLMService {
                     fallbackQuery = fallbackQuery.not('id', 'in', `(${prioritizedIds.join(',')})`);
                 }
                 
-                // Limit to only what we need to reach 20
-                fallbackQuery = fallbackQuery.limit(20 - allWines.length);
+                // Limit to only 10 more wines
+                fallbackQuery = fallbackQuery.limit(10);
                 
                 const { data: fallbackWines, error: fallbackError } = await fallbackQuery;
                 

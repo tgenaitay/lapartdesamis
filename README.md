@@ -1,27 +1,15 @@
 # Wine is Mine 🇫🇷🍷
 
-A web application to query tastes from wine enthusiasts, and fetch a selection of great wines from our catalog. Featuring server-side data transformation through Llama 3.3, and a function call to Supabase.
-
-## Project Structure
-
-```
-├── public/           # Static frontend assets
-│   ├── index.html    # Main entry page
-│   └── results.html  # Results display page
-├── server/           # Backend server
-│   ├── services/     # Server services
-│   │   ├── llm.js    # LLM service implementation
-│   │   └── storage.js # Storage service implementation
-│   └── server.js     # Main server implementation
-└── vercel.json       # Vercel deployment configuration
-```
+A web application to query tastes from wine enthusiasts, and fetch a selection of great wines from our catalog.
+Currently using Together AI's free endpoint for Llama 3.3.
 
 ## Features
 
 - Server-side processing with Node.js
 - Static file serving for frontend assets
-- LLM integration for intelligent processing
-- Data storage functionality
+- LLM integration for intelligent processing of user input
+- Function call to Supabase for querying
+- Data storage in Supabase
 
 ## Prerequisites
 
@@ -65,10 +53,16 @@ To deploy:
 2. Install environment variables in Vercel settings
 3. Run `vercel --prod` in the project root
 
+## Demo
+
 https://wine-is-mine.vercel.app/
 
 All feedback welcome.
 
+## Known issues
+
+- Llama 3.3 randomly outputs a shaky native function call in its content instead of a tool call
+- 
 
 ## Wine Selection Logic 🍇
 
