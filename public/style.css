@@ -1,351 +1,406 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap');
+/*
+Theme: Wine is Mine
+Description: Styles for the Wine is Mine questionnaire and results pages.
+Author: Gemini
+*/
 
-:root {
-    --bg: #1a120b;
-    --text: #e5e5cb;
-    --accent: #d4af37;
-    --secondary: #3c2a21;
-    --hover: #654321;
-    --font-main: 'Arial', sans-serif;
-    --font-title: "Cormorant Garamond", serif;
-}
+/* ==========================================================================
+   1. Imports and Root Variables
+   ========================================================================== */
 
-body {
-    background: linear-gradient(to top, var(--bg), #000);
-    color: var(--text);
-    font-family: var(--font-main);
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
-}
+   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap');
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 30px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-h1, h2 {
-    font-family: var(--font-title);
-    font-weight: 500;
-    font-style: normal;
-    color: var(--accent);
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 10px;
-}
-
-.question-group {
-    background: rgba(60, 42, 33, 0.3);
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
-
-.question-group:hover {
-    background: rgba(60, 42, 33, 0.5);
-}
-
-label {
-    display: block;
-    margin: 10px 0;
-    cursor: pointer;
-    position: relative;
-    padding-left: 30px;
-}
-
-input[type="radio"],
-input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-}
-
-.custom-radio {
-    position: absolute;
-    left: 0;
-    top: 2px;
-    height: 20px;
-    width: 20px;
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-}
-
-input:checked ~ .custom-radio {
-    background: var(--accent);
-}
-
-.rating-scale {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-}
-
-.rating-btn {
-    background: var(--secondary);
-    border: 1px solid var(--accent);
-    color: var(--text);
-    padding: 8px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.rating-btn.active {
-    background: var(--accent);
-    color: var(--bg);
-}
-
-.wine-type h3 {
-    border-bottom: 1px solid var(--text);
-}
-
-button[type="submit"] {
-    background: linear-gradient(to right, var(--accent), #b8860b);
-    color: var(--bg);
-    padding: 15px 40px;
-    border: none;
-    border-radius: 30px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-button[type="submit"]:hover {
-    transform: scale(1.05);
-}
-
-.hidden {
-    display: none;
-}
-
-input[type="text"], textarea {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--accent);
-    color: var(--text);
-    padding: 8px;
-    border-radius: 4px;
-    width: 100%;
-    margin-top: 5px;
-}
-
-.required::after {
-    content: "*";
-    color: #ff4444;
-    margin-left: 3px;
-}
-
-.ranking-system {
-    display: flex;
-    gap: 15px;
-    flex-direction: column;
-    margin: 20px 0;
-}
-
-.ranking-item {
-    background: var(--secondary);
-    padding: 15px 25px;
-    border-radius: 20px;
-    border: 1px solid var(--accent);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-    min-height: 50px;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.ranking-item:active {
-    transform: scale(0.98);
-}
-
-.ranking-item.ranked {
-    background: var(--hover);
-    border-color: var(--accent);
-}
-
-.rank-indicator {
-    width: 30px;
-    height: 30px;
-    background: var(--accent);
-    color: var(--bg);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1.2em;
-}
-
-.reset-ranking-btn {
-    background: none;
-    color: var(--text);
-    border: 0px;
-    border-radius: 20px;
-    margin-top: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1em;
-}
-
-.reset-ranking-btn:hover {
-    text-decoration: underline;
-}
-
-.rank-select {
-    background: var(--accent);
-    color: var(--bg);
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-.rank-select option {
-    background: var(--bg);
-    color: var(--text);
-}
-
-.loading {
-    text-align: center;
-}
-
-.error {
-    color: #ff4444;
-    background: rgba(255, 68, 68, 0.1);
-    padding: 15px;
-    margin: 20px 0;
-}
-
-.success {
-    padding: 15px;
-    margin: 20px 0;
-}
-
-#loading-container {
-    text-align: center;
-    margin-top: 20px;
-    padding: 20px;
-}
-.loading-spinner {
-    border: 4px solid rgba(212, 175, 55, 0.3);
-    border-radius: 50%;
-    border-top: 4px solid var(--accent);
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 15px;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-.loading-status {
-    color: var(--accent);
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.2em;
-}
-.loading-error {
-    color: #ff4444;
-    margin-top: 10px;
-}
-
-
-.wine-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-    margin-bottom: 40px;
-}
-
-.cta-section {
-    text-align: center;
-}
-
-.cta-text {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.2em;
-    color: var(--text);
-    margin-bottom: 25px;
-}
-
-.cta-button {
-    background: linear-gradient(to right, var(--accent), #b8860b);
-    color: var(--bg);
-    padding: 15px 40px;
-    border: none;
-    border-radius: 30px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.cta-button:hover {
-    transform: scale(1.05);
-}
-
-.wine-card {
-    background: var(--secondary);
-    border-radius: 10px;
-    padding: 20px;
-    transition: transform 0.3s ease;
-}
-
-.wine-card:hover {
-    transform: translateY(-5px);
-    background: var(--hover);
-}
-
-.wine-card h3 {
-    color: var(--accent);
-    margin: 0 0 15px 0;
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.5em;
-}
-
-.wine-info {
-    margin: 10px 0;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
-    text-align: left;
-}
-
-.wine-label {
-    color: var(--accent);
-    font-weight: bold;
-}
-
-.wine-value {
-    color: var(--text);
-}
-
-.characteristics {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid var(--accent);
-}
-
-.characteristic-bar {
-    height: 8px;
-    background: rgba(212, 175, 55, 0.2);
-    border-radius: 4px;
-    margin: 5px 0;
-    position: relative;
-    top: 4px;
-}
-
-.characteristic-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
+   :root {
+       --bg: #1a120b;
+       --text: #e5e5cb;
+       --accent: #d4af37;
+       --secondary: #3c2a21;
+       --hover: #654321;
+       --font-main: 'Arial', sans-serif;
+       --font_title: "Cormorant Garamond", serif;
+   }
+   
+   /* ==========================================================================
+      2. General Styles
+      ========================================================================== */
+   
+   body {
+       background: linear-gradient(to top, var(--bg), #000);
+       color: var(--text);
+       font-family: var(--font-main);
+       line-height: 1.6;
+       margin: 0;
+       padding: 20px;
+   }
+   
+   .container {
+       max-width: 800px;
+       margin: 0 auto;
+       background: rgba(0, 0, 0, 0.5);
+       padding: 30px;
+       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+   }
+   
+   h1, h2, h3 {
+       font-family: var(--font_title);
+       font-weight: 500;
+       font-style: normal;
+   }
+   
+   h1 {
+       color: var(--accent);
+       border-bottom: 2px solid var(--accent);
+       padding-bottom: 10px;
+   }
+   
+   h2 {
+       color: var(--accent);
+   }
+   
+   /* ==========================================================================
+      3. Form Styles
+      ========================================================================== */
+   
+   form#wineForm {} /* Add custom style for wine form if needed */
+   
+   .question-group {
+       background: rgba(60, 42, 33, 0.3);
+       padding: 20px;
+       margin: 20px 0;
+       border-radius: 10px;
+       transition: all 0.3s ease;
+   }
+   
+   .question-group:hover {
+       background: rgba(60, 42, 33, 0.5);
+   }
+   
+   label {
+       display: block;
+       margin: 10px 0;
+       cursor: pointer;
+       position: relative;
+       padding-left: 30px;
+   }
+   
+   /* Custom Radio Buttons */
+   input[type="radio"],
+   input[type="checkbox"] {
+       position: absolute;
+       opacity: 0;
+   }
+   
+   .custom-radio {
+       position: absolute;
+       left: 0;
+       top: 2px;
+       height: 20px;
+       width: 20px;
+       border: 2px solid var(--accent);
+       border-radius: 50%;
+   }
+   
+   input:checked ~ .custom-radio {
+       background: var(--accent);
+   }
+   
+   /* Text Inputs and Textareas */
+   input[type="text"],
+   textarea {
+       background: rgba(255, 255, 255, 0.1);
+       border: 1px solid var(--accent);
+       color: var(--text);
+       padding: 8px;
+       border-radius: 4px;
+       width: 100%;
+       margin-top: 5px;
+   }
+   
+   /* Required Field Indicator */
+   .required::after {
+       content: "*";
+       color: #ff4444;
+       margin-left: 3px;
+   }
+   
+   /* Submit Button */
+   button[type="submit"] {
+       background: linear-gradient(to right, var(--accent), #b8860b);
+       color: var(--bg);
+       padding: 15px 40px;
+       border: none;
+       border-radius: 30px;
+       font-size: 1.1em;
+       cursor: pointer;
+       transition: transform 0.3s ease;
+   }
+   
+   button[type="submit"]:hover {
+       transform: scale(1.05);
+   }
+   
+   /* ==========================================================================
+      4. Ranking System Styles
+      ========================================================================== */
+   
+   .ranking-system {
+       display: flex;
+       gap: 15px;
+       flex-direction: column;
+       margin: 20px 0;
+   }
+   
+   .ranking-item {
+       background: var(--secondary);
+       padding: 15px 25px;
+       border-radius: 20px;
+       border: 1px solid var(--accent);
+       display: flex;
+       align-items: center;
+       gap: 15px;
+       cursor: pointer;
+       position: relative;
+       transition: all 0.3s ease;
+       min-height: 50px;
+       touch-action: manipulation;
+       -webkit-tap-highlight-color: transparent;
+   }
+   
+   .ranking-item:active {
+       transform: scale(0.98);
+   }
+   
+   .ranking-item.ranked {
+       background: var(--hover);
+       border-color: var(--accent);
+   }
+   
+   .rank-indicator {
+       width: 30px;
+       height: 30px;
+       background: var(--accent);
+       color: var(--bg);
+       border-radius: 50%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-weight: bold;
+       font-size: 1.2em;
+   }
+   
+   .reset-ranking-btn {
+       background: none;
+       color: var(--text);
+       border: 0px;
+       border-radius: 20px;
+       margin-top: 15px;
+       cursor: pointer;
+       transition: all 0.3s ease;
+       font-size: 1em;
+   }
+   
+   .reset-ranking-btn:hover {
+       text-decoration: underline;
+   }
+   
+   /* ==========================================================================
+      5. Rating Scale Styles
+      ========================================================================== */
+   
+   .rating-scale {
+       display: flex;
+       gap: 10px;
+       margin: 15px 0;
+   }
+   
+   .rating-btn {
+       background: var(--secondary);
+       border: 1px solid var(--accent);
+       color: var(--text);
+       padding: 8px 15px;
+       border-radius: 20px;
+       cursor: pointer;
+       transition: all 0.3s ease;
+   }
+   
+   .rating-btn.active {
+       background: var(--accent);
+       color: var(--bg);
+   }
+   
+   /* ==========================================================================
+      6. Conditional Question Styles
+      ========================================================================== */
+   .hidden {
+       display: none;
+   }
+   
+   /* ==========================================================================
+      7. Wine Preferences
+      ========================================================================== */
+   
+   .wine-type h3 {
+       border-bottom: 1px solid var(--text);
+   }
+   
+   .wine-preferences { /* Add custom style for wine preferences if needed */ }
+   
+   /* ==========================================================================
+      8. Loading and Error Styles
+      ========================================================================== */
+   
+   .loading {
+       text-align: center;
+   }
+   
+   .error {
+       color: #ff4444;
+       background: rgba(255, 68, 68, 0.1);
+       padding: 15px;
+       margin: 20px 0;
+   }
+   
+   .success {
+       padding: 15px;
+       margin: 20px 0;
+   }
+   
+   /* Loading Container and Spinner */
+   #loading-container {
+       text-align: center;
+       margin-top: 20px;
+       padding: 20px;
+   }
+   
+   .loading-spinner {
+       border: 4px solid rgba(212, 175, 55, 0.3);
+       border-radius: 50%;
+       border-top: 4px solid var(--accent);
+       width: 40px;
+       height: 40px;
+       animation: spin 1s linear infinite;
+       margin: 0 auto 15px;
+   }
+   
+   @keyframes spin {
+       0% {
+           transform: rotate(0deg);
+       }
+   
+       100% {
+           transform: rotate(360deg);
+       }
+   }
+   
+   .loading-status {
+       color: var(--accent);
+       font-family: "Cormorant Garamond", serif;
+       font-size: 1.2em;
+   }
+   
+   .loading-error {
+       color: #ff4444;
+       margin-top: 10px;
+   }
+   
+   /* ==========================================================================
+      9. Wine Grid and Card Styles
+      ========================================================================== */
+   
+   .wine-grid {
+       display: grid;
+       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+       gap: 20px;
+       margin-top: 30px;
+       margin-bottom: 40px;
+   }
+   
+   .wine-card {
+       background: var(--secondary);
+       border-radius: 10px;
+       padding: 20px;
+       transition: transform 0.3s ease;
+   }
+   
+   .wine-card:hover {
+       transform: translateY(-5px);
+       background: var(--hover);
+   }
+   
+   .wine-card h3 {
+       color: var(--accent);
+       margin: 0 0 15px 0;
+       font-family: "Cormorant Garamond", serif;
+       font-size: 1.5em;
+   }
+   
+   .wine-info {
+       margin: 10px 0;
+       display: grid;
+       grid-template-columns: auto 1fr;
+       gap: 10px;
+       text-align: left;
+   }
+   
+   .wine-label {
+       color: var(--accent);
+       font-weight: bold;
+   }
+   
+   .wine-value {
+       color: var(--text);
+   }
+   
+   .characteristics {
+       margin-top: 15px;
+       padding-top: 15px;
+       border-top: 1px solid var(--accent);
+   }
+   
+   .characteristic-bar {
+       height: 8px;
+       background: rgba(212, 175, 55, 0.2);
+       border-radius: 4px;
+       margin: 5px 0;
+       position: relative;
+       top: 4px;
+   }
+   
+   .characteristic-fill {
+       height: 100%;
+       background: var(--accent);
+       border-radius: 4px;
+       transition: width 0.3s ease;
+   }
+   
+   /* ==========================================================================
+      10. Call to Action Styles
+      ========================================================================== */
+   
+   .cta-section {
+       text-align: center;
+   }
+   
+   .cta-text {
+       font-family: "Cormorant Garamond", serif;
+       font-size: 1.2em;
+       color: var(--text);
+       margin-bottom: 25px;
+   }
+   
+   .cta-button {
+       background: linear-gradient(to right, var(--accent), #b8860b);
+       color: var(--bg);
+       padding: 15px 40px;
+       border: none;
+       border-radius: 30px;
+       font-size: 1.1em;
+       cursor: pointer;
+       transition: transform 0.3s ease;
+       text-decoration: none;
+       display: inline-block;
+   }
+   
+   .cta-button:hover {
+       transform: scale(1.05);
+   }
