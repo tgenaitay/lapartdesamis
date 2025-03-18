@@ -50,53 +50,59 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
     
-    // Ranking System for wine types
+    // Ranking System for wine types (Tap-to-Select)
     const wineRanking = document.getElementById('wineRanking');
     const rankingItems = document.querySelectorAll('.ranking-item');
+    let currentRankingIndex = 0;
     
     // Shuffle the ranking items
     const shuffledItems = shuffleArray([...rankingItems]);
     shuffledItems.forEach(item => {
         wineRanking.appendChild(item);
-        item.setAttribute('draggable', 'true');
-        item.addEventListener('dragstart', function() {
-            this.classList.add('dragging');
-        });
-        item.addEventListener('dragend', function() {
-            this.classList.remove('dragging');
-            updateWineOrder();
-        });
-    });
-    
-    wineRanking.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        const afterElement = getDragAfterElement(wineRanking, e.clientY);
-        const draggable = document.querySelector('.dragging');
-        if (afterElement) {
-            wineRanking.insertBefore(draggable, afterElement);
-        } else {
-            wineRanking.appendChild(draggable);
-        }
-    });
-    
-    function getDragAfterElement(container, y) {
-        const draggableElements = [...container.querySelectorAll('.ranking-item:not(.dragging)')];
+        // Add rank indicator
+        const rankIndicator = document.createElement('span');
+        rankIndicator.className = 'rank-indicator';
+        item.insertBefore(rankIndicator, item.firstChild);
         
-        return draggableElements.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
-            
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            } else {
-                return closest;
+        // Add tap event listener
+        item.addEventListener('click', function() {
+            if (!this.dataset.rank) {
+                currentRankingIndex++;
+                this.dataset.rank = currentRankingIndex;
+                this.querySelector('.rank-indicator').textContent = currentRankingIndex;
+                this.classList.add('ranked');
+                updateWineOrder();
             }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-    }
+        });
+    });
+    
+    // Add reset button
+    const resetButton = document.createElement('button');
+    resetButton.textContent = 'Réinitialiser ce classement';
+    resetButton.className = 'reset-ranking-btn';
+    resetButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        currentRankingIndex = 0;
+        rankingItems.forEach(item => {
+            delete item.dataset.rank;
+            item.querySelector('.rank-indicator').textContent = '';
+            item.classList.remove('ranked');
+        });
+        updateWineOrder();
+    });
+    wineRanking.after(resetButton);
     
     function updateWineOrder() {
-        const order = Array.from(document.querySelectorAll('.ranking-item'))
-        .map(item => item.dataset.value);
+        const items = Array.from(document.querySelectorAll('.ranking-item'));
+        const rankedItems = items
+            .filter(item => item.dataset.rank)
+            .sort((a, b) => parseInt(a.dataset.rank) - parseInt(b.dataset.rank))
+            .map(item => item.dataset.value);
+        const unrankedItems = items
+            .filter(item => !item.dataset.rank)
+            .map(item => item.dataset.value);
+        const order = [...rankedItems, ...unrankedItems];
         document.getElementById('wineOrder').value = order.join(',');
     }
     
@@ -282,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Add wine ranking if present (Question 4)
             const wineOrder = document.getElementById('wineOrder');
+            console.log(wineOrder);
             if (wineOrder && wineOrder.value) {
                 formattedData['4. Classement'] = wineOrder.value;
             }

@@ -335,7 +335,6 @@ Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne cont
 
                 // 3. Ajouter l'influence de note_wim
                 score += wine.note_wim * 5; // Multiplier par 5
-
                 return { ...wine, score };
             });
                 

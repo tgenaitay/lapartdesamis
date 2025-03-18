@@ -97,6 +97,10 @@ input:checked ~ .custom-radio {
     color: var(--bg);
 }
 
+.wine-type h3 {
+    border-bottom: 1px solid var(--text);
+}
+
 button[type="submit"] {
     background: linear-gradient(to right, var(--accent), #b8860b);
     color: var(--bg);
@@ -141,13 +145,55 @@ input[type="text"], textarea {
 
 .ranking-item {
     background: var(--secondary);
-    padding: 10px 20px;
+    padding: 15px 25px;
     border-radius: 20px;
     border: 1px solid var(--accent);
     display: flex;
     align-items: center;
     gap: 15px;
     cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    min-height: 50px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.ranking-item:active {
+    transform: scale(0.98);
+}
+
+.ranking-item.ranked {
+    background: var(--hover);
+    border-color: var(--accent);
+}
+
+.rank-indicator {
+    width: 30px;
+    height: 30px;
+    background: var(--accent);
+    color: var(--bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.reset-ranking-btn {
+    background: none;
+    color: var(--text);
+    border: 0px;
+    border-radius: 20px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+}
+
+.reset-ranking-btn:hover {
+    text-decoration: underline;
 }
 
 .rank-select {
