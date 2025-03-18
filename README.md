@@ -75,17 +75,17 @@ Our selection process works in 3 clear phases:
    - Favorite domains/châteaux
    - Price range preferences
 
-   If the initial search is not returning 20 results, e.g if user entered a specific domain but no regions, we broaden the search without filters except for price.
+   If the initial search resulted to less than 10 wines, or if the connoisseurs let us broaden their horizons, we expand the search without filters - except for price.
 
 2. **Scoring**  
    Each wine earns points based on:
    - **Color priority**: 4x points for 1st choice color, 3x for 2nd, etc, with a factor of 10
    - **Taste match**: Matches wine characteristics to user preferences  
      *(e.g. "Fruity reds" get boosted if user prefers fruity flavors)*
-   - **Quality score**: Wine is Mine internal rating (note_wim) gives bonus points, with a factor of 10
+   - **Quality score**: Wine is Mine internal rating (note_wim) gives bonus points, with a factor of 5
 
 3. **Final selection**  
-   - Top 20 potential matches are identified
+   - up to 20 potential matches are identified
    - These are re-ranked by total score
    - Final selection shows the 10 highest-scoring wines
 

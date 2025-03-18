@@ -334,7 +334,7 @@ Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne cont
                 // Note: Pas de caractéristiques gustatives pour Bulles ou Rosé dans la DB
 
                 // 3. Ajouter l'influence de note_wim
-                score += wine.note_wim * 10; // Multiplier par 10 pour aligner avec le poids des couleurs
+                score += wine.note_wim * 5; // Multiplier par 5
 
                 return { ...wine, score };
             });
