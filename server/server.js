@@ -37,7 +37,9 @@ app.post('/submit', async (req, res) => {
                 message: 'Form data processed successfully',
                 selection: llmResult.selection
             };
-            
+
+            console.log('****************************'); 
+            console.log('Wines selected in catalog:', llmResult.selection.length);
             // Store form data and LLM selection in Supabase
             const { data, error } = await storageService.storeFormSubmission(req.body, llmResult.selection);
             

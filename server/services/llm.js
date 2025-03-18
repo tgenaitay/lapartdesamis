@@ -23,38 +23,44 @@ class LLMService {
                     parameters: {
                         type: "object",
                         properties: {
-                            filters: { type: "object", properties: { 
-                                region: { type: "array", items: { type: "string" } }, 
-                                prix_max: { type: "number" }, 
-                                prix_min: { type: "number" }, 
-                                appellations: { type: "array", items: { type: "string" } }, 
-                                domaines: { type: "array", items: { type: "string" } } 
-                            } },
-                            color_weights: { type: "object", properties: { 
-                                rouge: { type: "number" }, 
-                                blanc: { type: "number" }, 
-                                rose: { type: "number" }, 
-                                bulles: { type: "number" } 
-                            } },
-                            preferences: { type: "object", properties: { 
-                                rouges: { type: "object", 
-                                    properties: { 
-                                        rouge_fruite: { type: "number" }, 
-                                        rouge_epice: { type: "number" }, 
-                                        rouge_boise: { type: "number" }, 
-                                        rouge_tannique: { type: "number" } 
-                                    } 
-                                },
-                                blancs: { type: "object", 
-                                    properties: { 
-                                        blanc_fruite: { type: "number" }, 
-                                        blanc_mineral: { type: "number" }, 
-                                        blanc_beurre: { type: "number" }, 
-                                        blanc_boise: { type: "number" },
-                                        blanc_sucrosite: { type: "number" } 
-                                    } 
-                                }                                 
-                            } }
+                            filters: { 
+                                type: "object", 
+                                properties: { 
+                                    regions: { type: "array", items: { type: "string" } }, 
+                                    prix_max: { type: "number" }, 
+                                    prix_min: { type: "number" }, 
+                                    appellations: { type: "array", items: { type: "string" } }, 
+                                    domaines: { type: "array", items: { type: "string" } } 
+                                } },
+                            color_weights: { 
+                                type: "object", 
+                                properties: { 
+                                    rouge: { type: "number" }, 
+                                    blanc: { type: "number" }, 
+                                    rose: { type: "number" }, 
+                                    bulles: { type: "number" } 
+                                } },
+                            preferences: { 
+                                type: "object", 
+                                properties: { 
+                                    rouges: { type: "object", 
+                                        properties: { 
+                                            rouge_fruite: { type: "number" }, 
+                                            rouge_epice: { type: "number" }, 
+                                            rouge_boise: { type: "number" }, 
+                                            rouge_tannique: { type: "number" } 
+                                        } 
+                                    },
+                                    blancs: { type: "object", 
+                                        properties: { 
+                                            blanc_fruite: { type: "number" }, 
+                                            blanc_mineral: { type: "number" }, 
+                                            blanc_beurre: { type: "number" }, 
+                                            blanc_boise: { type: "number" },
+                                            blanc_sucrosite: { type: "number" } 
+                                        } 
+                                    }                                 
+                                } }
                         },
                         required: ["filters", "color_weights", "preferences"]
                     }
@@ -134,7 +140,16 @@ class LLMService {
 
     preparePrompt(formData) {
         // Convert form data into a structured prompt
-        return "Notre équipe commerciale vient de terminer un rendez-vous avec un client et a fourni le resultat d'un questionnaire. Vous êtes un assistant expert en vins, chargé de recommander les 10 meilleurs vins à ce client en fonction de ses préférences tirées du questionnaire. Les réponses du client sont fournies sous forme de paires clé-valeur au format JSON, avec des variations selon le niveau d'expertise du client ('debutant' ou 'expert' ou 'connaisseur'). Merci d'analyser les préférences du client pour l'aider à constituer une cave. Votre tâche est d'analyser ces préférences et d'appeler la fonction 'query_wines' avec les paramètres appropriés pour filtrer et scorer les vins de la base de données. Retournez uniquement l'appel de la fonction au format JSON. Ce client est a très fort potentiel commercial, bien prendre le temps de réfléchir avant de formuler l'appel de fonction." 
+        return "Notre équipe commerciale vient de terminer un rendez-vous avec un client et a fourni le resultat d'un questionnaire. Vous êtes un assistant expert en vins, chargé de recommander les 10 meilleurs vins à ce client en fonction de ses préférences tirées du questionnaire. Les réponses du client sont fournies sous forme de paires clé-valeur au format JSON, avec des variations selon le niveau d'expertise du client ('debutant' ou 'expert' ou 'connaisseur'). Merci d'analyser les préférences du client pour l'aider à constituer une cave. Votre tâche est d'analyser ces préférences." 
+        // + "Retournez uniquement l'appel de la fonction. Ce client est a très fort potentiel commercial, bien prendre le temps de réfléchir avant de formuler l'appel de fonction et bien fermer chaque {."
+        // + "Répondez UNIQUEMENT dans le format suivant sans préfixe ni suffixe :"
+        // + '<function=query_wines>{"filters": {}, "color_weights": {}, "preferences": {}}</function>'
+        // + "Rappel:"
+        // + "- Les appels de fonction DOIVENT suivre le format spécifié, commencer par <function= et se terminer par </function>"
+        // + "- Les paramètres requis DOIVENT être spécifiés"
+        // + "- N'appelez qu'une seule fonction à la fois"
+        // + "- Mettez l'appel de fonction complet sur une seule ligne"
+        // + "- Validez le JSON avec les {} necessaires"
         +
            "**Contexte de la base de données :**\n" +
            "- Table : `wines`\n" +
@@ -149,11 +164,11 @@ class LLMService {
            "     - Si la réponse est vide ou n'a pas de sens, définissez `appellations` et `domaines` comme des tableaux vides.\n" +
            "   - De la question 8, analysez la fourchette de budget (par exemple, \"50-100\") en `prix_min` et `prix_max`.\n" +
            "   - Omettez tout filtre non spécifié ou non pertinent.\n\n" +
-           "2. **Poids des couleurs** :\n" +
+           "2. **Poids des couleurs (color_weights)** :\n" +
            "   - De la question 4 (\"Classement\", par exemple, \"rouge,petillant,blanc,rose\"), attribuez des poids :\n" +
            "     - 1er : 4, 2ème : 3, 3ème : 2, 4ème : 1.\n" +
            "   - Mappez \"petillant\" à la couleur \"Bulles\". Utilisez \"Rouge\", \"Blanc\", \"Bulles\", \"Rosé\" comme clés.\n\n" +
-           "3. **Préférences** :\n" +
+           "3. **Préférences (preferences)** :\n" +
            "   - De la question 5 (\"Préférences de goût\"), extrayez les notes (1-5) pour chaque type de vin :\n" +
            "     - \"rouges\" : \"fruite\", \"épice\", \"boise\", \"tannique\".\n" +
            "     - \"blancs\" : \"fruite\", \"mineral\", \"beurre\", \"boise\", \"sucrosite\".\n" +
@@ -163,7 +178,8 @@ class LLMService {
            "   - Générez un objet JSON 100% valide pour la fonction `query_wines` avec `filters`, `color_weights`, et `preferences`.\n\n" +
            "   - Les clés 'regions', 'appellations', et 'domaines' doivent être des tableaux de chaînes.\n\n \n\n" +
            "**Exemple de sortie attendue :**\n" +
-           "{\n" +
+        //    "<function=query_wines>" +
+        //    "{\n" +
            "  \"filters\": {\n" +
            "    \"regions\": [\"bourgogne\", \"provence\"],\n" +
            "    \"appellations\": [\"Meursault\"],\n" +
@@ -179,9 +195,10 @@ class LLMService {
            "  },\n" +
            "  \"preferences\": {\n" +
            "    \"rouges\": {\"fruite\": 2, \"epice\": 5, \"boise\": 5, \"tannique\": 3},\n" +
-           "    \"blancs\": {\"fruite\": 5, \"mineral\": 5, \"beurre\": 2, \"boise\": 1, \"sucrosite\": 1},\n" +
+           "    \"blancs\": {\"fruite\": 5, \"mineral\": 5, \"beurre\": 2, \"boise\": 1, \"sucrosite\": 1}\n" +
            "  }\n" +
-           "}\n\n" +
+        //    "}\n\n" +
+        //    "</function>" +
            "Les données du client sont les suivantes : " + JSON.stringify(formData, null, 2);
     }
 
@@ -189,40 +206,98 @@ class LLMService {
         console.log('****************************'); 
         console.log("Received SQL query with params:", filters, color_weights, preferences)
         try {
-            // Initialiser le client Supabase (à adapter selon votre configuration)
             const { createClient } = require('@supabase/supabase-js');
             const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
     
-            // Construire la requête de base
-            let query = supabase.from('wines').select('*');
+            // Build the filter conditions
+            const filterConditions = [];
     
-// Appliquer les filtres: regions, prix min, prix max, appelations, domaines
-/* Les filtres (region, prix_min, prix_max, appellations, domaines) sont appliqués avec les méthodes Supabase .in() (inclus dans), .gte() (supérieur ou égal), et .lte() (inférieur ou égal).
-Chaque filtre est conditionnel : s'il n'est pas défini dans filters, il est ignoré.*/
-
+            // Add regions to OR conditions
             if (filters.regions && Array.isArray(filters.regions) && filters.regions.length > 0) {
-                query = query.in('region', filters.regions);
+                filters.regions.forEach(region => {
+                    filterConditions.push({ region: { eq: region } });
+                });
             }
+            
+            // Handle other text-based filters with ilike
+            if (filters.appellations && Array.isArray(filters.appellations) && filters.appellations.length > 0) {
+                filters.appellations.forEach(appellation => {
+                    filterConditions.push({ appellation: { ilike: `%${appellation}%` } });
+                });
+            }
+            
+            if (filters.domaines && Array.isArray(filters.domaines) && filters.domaines.length > 0) {
+                filters.domaines.forEach(domaine => {
+                    filterConditions.push({ domaine_chateau: { ilike: `%${domaine}%` } });
+                });
+            }
+
+            console.log("Filter conditions:", filterConditions);
+            
+            // First query: Get wines that match the specific filters (prioritized)
+            let prioritizedQuery = supabase.from('wines').select('*');
+            
+            // Apply OR conditions if any exist
+            if (filterConditions.length > 0) {
+                prioritizedQuery = prioritizedQuery.or(filterConditions.map(condition => 
+                    Object.entries(condition).map(([key, value]) => 
+                        `${key}.${Object.keys(value)[0]}.${Object.values(value)[0]}`
+                    ).join(',')
+                ).join(','));
+            }
+            
+            // Apply price filters
             if (filters.prix_min) {
-                query = query.gte('prix', filters.prix_min);
+                prioritizedQuery = prioritizedQuery.gte('prix', filters.prix_min);
             }
             if (filters.prix_max) {
-                query = query.lte('prix', filters.prix_max);
+                prioritizedQuery = prioritizedQuery.lte('prix', filters.prix_max);
             }
-            if (filters.appellations && Array.isArray(filters.appellations) && filters.appellations.length > 0) {
-                query = query.in('appellation', filters.appellations);
+            
+            // Get prioritized wines (those matching specific filters)
+            const { data: prioritizedWines, error: prioritizedError } = await prioritizedQuery;
+            
+            if (prioritizedError) {
+                throw new Error('Erreur lors de la récupération des vins prioritaires : ' + prioritizedError.message);
             }
-            if (filters.domaines && Array.isArray(filters.domaines) && filters.domaines.length > 0) {
-                query = query.in('domaine_chateau', filters.domaines);
+            
+            let allWines = [...prioritizedWines];
+            
+            // If we have fewer than 20 wines, get additional wines without the specific filters
+            if (allWines.length < 20) {
+                // Second query: Get additional wines to reach 20 total
+                // We'll still respect price filters but ignore the specific region/appellation/domaine filters
+                let fallbackQuery = supabase.from('wines').select('*');
+                
+                // Apply price filters for fallback
+                // Maybe we should remove price filters to explore other wines the prospect could like despite budget??
+                if (filters.prix_min) {
+                    fallbackQuery = fallbackQuery.gte('prix', filters.prix_min);
+                }
+                if (filters.prix_max) {
+                    fallbackQuery = fallbackQuery.lte('prix', filters.prix_max);
+                }
+                
+                // Exclude wines we already have
+                if (prioritizedWines.length > 0) {
+                    const prioritizedIds = prioritizedWines.map(wine => wine.id);
+                    fallbackQuery = fallbackQuery.not('id', 'in', `(${prioritizedIds.join(',')})`);
+                }
+                
+                // Limit to only what we need to reach 20
+                fallbackQuery = fallbackQuery.limit(20 - allWines.length);
+                
+                const { data: fallbackWines, error: fallbackError } = await fallbackQuery;
+                
+                if (fallbackError) {
+                    console.error('Erreur lors de la récupération des vins supplémentaires :', fallbackError);
+                    // Continue with what we have if fallback fails
+                } else {
+                    allWines = [...allWines, ...fallbackWines];
+                }
             }
-    
-            // Exécuter la requête
-            const { data: wines, error } = await query;
-    
-            if (error) {
-                throw new Error('Erreur lors de la récupération des vins : ' + error.message);
-            }
-    
+            
+            
             // Calculer les scores pour chaque vin fonction des préférences et des poids des couleurs
 /* 
 Poids des couleurs : Le poids de la couleur (color_weights) est multiplié par 10 pour lui donner une importance significative dans le score total.
@@ -232,7 +307,7 @@ Pour les vins blancs, on fait de même avec leurs caractéristiques (blanc_fruit
 Les valeurs nulles sont gérées avec || 0 pour éviter les erreurs.
 Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne contient pas ces caractéristiques.
 */
-            const scoredWines = wines.map(wine => {
+            const scoredWines = allWines.map(wine => {
                 let score = 0;
 
                 // 1. Appliquer le poids de la couleur
