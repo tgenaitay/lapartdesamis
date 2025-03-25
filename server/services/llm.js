@@ -60,7 +60,8 @@ class LLMService {
                                             blanc_boise: { type: "number" },
                                             blanc_sucrosite: { type: "number" } 
                                         } 
-                                    }                                 
+                                    },
+                                    conduite: { type: "number" }                                 
                                 } }
                         },
                         required: ["filters", "color_weights", "preferences"]
@@ -81,7 +82,7 @@ class LLMService {
                         content: prompt
                     }
                 ],
-                temperature: 1,
+                temperature: 0,
                 max_tokens: null,
                 repetition_penalty: 1,
                 stop: ["<|eot_id|>","<|eom_id|>"],
@@ -157,12 +158,12 @@ class LLMService {
            "  - Pour 'Blanc' : `blanc_fruite`, `blanc_mineral`, `blanc_beurre`, `blanc_boise`, `blanc_sucrosite` (échelle de 1 à 5).\n\n" +
            "**Instructions :**\n" +
            "1. **Filtres** :\n" +
-           "   - De la question 6, extrayez les régions préférées (par exemple, \"bourgogne, provence\") sous forme de tableau.\n" +
-           "   - De la question 7 :\n" +
+           "   - De la question 7, extrayez les régions préférées (par exemple, \"bourgogne, provence\") sous forme de tableau.\n" +
+           "   - De la question 8 (connaisseurs et experts, pas débutants) :\n" +
            "     - Divisez la réponse par des virgules. Traitez les appellations (par exemple, \"Meursault\") et les domaines (par exemple, \"Domaine de Terrebrune\") séparément, et retournez-les comme tableaux (ex. [\"Meursault\"] et [\"Domaine de Terrebrune\"]). \n" +
            "     - Si la réponse est vide ou n'a pas de sens, définissez `appellations` et `domaines` comme des tableaux vides.\n" +
-           "   - De la question 8/9, analysez la fourchette de budget (par exemple, \"50-100\") en `prix_min` et `prix_max`.\n" +
-           "   - Le filtre 'more_regions' corresponds à la question 8 (connaisseurs) 'seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?' utilisez un booleen TRUE pour la réponse oui et FALSE pour non"+
+           "   - De la question 9/10, analysez la fourchette de budget (par exemple, \"50-100\") en `prix_min` et `prix_max`.\n" +
+           "   - Le filtre 'more_regions' corresponds à la question 9 (connaisseurs) 'Seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?' utilisez un booleen TRUE pour la réponse oui et FALSE pour non"+
            "   - Par defaut, 'more_regions' est toujours TRUE, sauf si l'utilisateur connaisseur a décidé que non" +
            "   - Omettez tout filtre non spécifié ou non pertinent.\n\n" +
            "2. **Poids des couleurs (color_weights)** :\n" +
@@ -173,8 +174,9 @@ class LLMService {
            "   - De la question 5 (\"Préférences de goût\"), extrayez les notes (1-5) pour chaque type de vin :\n" +
            "     - \"rouges\" : \"fruite\", \"épice\", \"boise\", \"tannique\".\n" +
            "     - \"blancs\" : \"fruite\", \"mineral\", \"beurre\", \"boise\", \"sucrosite\".\n" +
-           "     - Ignorez \"petillants\" et \"roses\" en raison des limitations de la base de données).\n" +
            "   - Les notes indiquent l'intensité de la préférence (1 = aversion, 5 = forte préférence).\n\n" +
+           "   - De la question 6 (\"Préférence viticulture raisonnée/biologique\"), extrayez la note (1-5)\n" +
+           "      - \"conduite\" : \nnote.\n" +
            "4. **Sortie** :\n" +
            "   - Générez un objet JSON 100% valide pour la fonction `query_wines` avec `filters`, `color_weights`, et `preferences`.\n\n" +
            "   - Les clés 'regions', 'appellations', et 'domaines' doivent être des tableaux de chaînes.\n\n \n\n" +
@@ -197,7 +199,8 @@ class LLMService {
            "  },\n" +
            "  \"preferences\": {\n" +
            "    \"rouges\": {\"fruite\": 2, \"epice\": 5, \"boise\": 5, \"tannique\": 3},\n" +
-           "    \"blancs\": {\"fruite\": 5, \"mineral\": 5, \"beurre\": 2, \"boise\": 1, \"sucrosite\": 1}\n" +
+           "    \"blancs\": {\"fruite\": 5, \"mineral\": 5, \"beurre\": 2, \"boise\": 1, \"sucrosite\": 1},\n" +
+           "    \"conduite\": 5\n" +
            "  }\n" +
         //    "}\n\n" +
         //    "</function>" +
@@ -303,10 +306,15 @@ class LLMService {
 /* 
 Poids des couleurs : Le poids de la couleur (color_weights) est multiplié par 10 pour lui donner une importance significative dans le score total.
 Préférences gustatives :
-Pour les vins rouges, on multiplie chaque caractéristique de la base de données (rouge_fruite, etc.) par la préférence correspondante (preferences.rouges.fruite, etc.).
-Pour les vins blancs, on fait de même avec leurs caractéristiques (blanc_fruite, etc.).
-Les valeurs nulles sont gérées avec || 0 pour éviter les erreurs.
-Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne contient pas ces caractéristiques.
+- Pour les vins rouges, on multiplie chaque caractéristique de la base de données (rouge_fruite, etc.) par la préférence correspondante (preferences.rouges.fruite, etc.).
+- Pour les vins blancs, on fait de même avec leurs caractéristiques (blanc_fruite, etc.).
+- Les valeurs nulles sont gérées avec || 0 pour éviter les erreurs.
+- Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne contient pas ces caractéristiques.
+Preference conduite:
+- Score augmenté de 0 à 20 selon type du vin x choix utilisateur. 
+- Forte (4-5): 20 biody, 10 biolo, 0 tradi.
+- Moyen (2-3): 20 bolio, 10 biody 10 tradi.
+- Faible (1-2): 20 tradi, 10 biolo, 0 biody. 
 */
             const scoredWines = allWines.map(wine => {
                 let score = 0;
@@ -335,7 +343,28 @@ Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne cont
 
                 // 3. Ajouter l'influence de note_wim
                 score += wine.note_wim * 5; // Multiplier par 5
+
+                // 4. Ajouter l'influence de la conduite
+                const conduite = wine.conduite.toLowerCase();
+                const conduite_mark = preferences.conduite;
+                
+                // Calculate conduite score based on preference alignment
+                if (conduite_mark >= 4) {
+                    // User strongly prefers biodynamic wines
+                    score += conduite === 'biodynamique' ? 20 :
+                            conduite === 'biologique' ? 10 : 0;
+                } else if (conduite_mark >= 2 && conduite_mark <= 3) {
+                    // User prefers biologic wines
+                    score += conduite === 'biologique' ? 20 :
+                            (conduite === 'biodynamique' || conduite === 'traditionnelle') ? 10 : 0;
+                } else {
+                    // User prefers traditional wines
+                    score += conduite === 'traditionnelle' ? 20 :
+                            conduite === 'biologique' ? 10 : 0;
+                }
+                console.log('Score for wine id:', wine.id, 'is', score, 'pts');
                 return { ...wine, score };
+
             });
                 
             // Trier par score décroissant et prendre les 10 premiers

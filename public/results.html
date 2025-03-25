@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wine is Mine - Pre-selection</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
     <style>
     /* Overriding main style.css with subtle changes */
@@ -13,6 +14,28 @@
     h2 {
         border-bottom: 0px;
         padding-bottom: 0px;
+    }
+    /* Add styles for the legend */
+    #legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 15px;
+        justify-content: center;
+    }
+    #legend span {
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: white;
+        font-size: 14px;
+        transition: opacity 0.3s ease, transform 0.2s ease;
+    }
+    #legend span.muted {
+        opacity: 0.4;
+    }
+    #legend span.highlighted {
+        opacity: 1;
+        transform: scale(1.05);
     }
     </style>
 </head>
@@ -26,8 +49,208 @@
                 <div class="loading-status">Chargement de vos résultats...</div>
             </div>
         </div>
+        <div id="map" style="width: 100%; height: 500px; margin-top: 20px; border-radius: 8px;"></div>
+        <div id="legend" style="margin: 10px 0px"></div>
     </div>
     
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script>
+        // Sample wine locations data
+        const wineLocations = [
+            { name: "Château Margaux", region: "Bordeaux", coordinates: [-.65, 45.04] },
+            { name: "Domaine de la Romanée-Conti", region: "Burgundy", coordinates: [4.95, 47.16] },
+            { name: "Château Cheval Blanc", region: "Saint-Émilion", coordinates: [-0.14, 44.92] },
+            { name: "Domaine Leflaive", region: "Burgundy", coordinates: [4.75, 46.91] },
+            { name: "Château d'Yquem", region: "Sauternes", coordinates: [-0.34, 44.62] },
+            { name: "Domaine Trimbach", region: "Alsace", coordinates: [7.31, 48.25] },
+            { name: "Château Latour", region: "Pauillac", coordinates: [-0.75, 45.18] },
+            { name: "Domaine Weinbach", region: "Alsace", coordinates: [7.28, 48.12] },
+            { name: "Château Pétrus", region: "Pomerol", coordinates: [-0.19, 44.93] },
+            { name: "Domaine Leroy", region: "Burgundy", coordinates: [4.86, 47.05] }
+        ];
+
+        // Fetch Mapbox token from server before initializing map
+        fetch('/api/mapbox-token')
+            .then(response => response.json())
+            .then(data => {
+                mapboxgl.accessToken = data.token;
+                const map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/dark-v11',
+                    center: [2.213749, 46.227638], // Center of France
+                    zoom: 5
+                });
+
+                // Add markers for each wine location
+                wineLocations.forEach(location => {
+                    const marker = document.createElement('div');
+                    marker.className = 'wine-marker';
+                    marker.style.width = '24px';
+                    marker.style.height = '24px';
+                    marker.style.backgroundImage = 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23d4af37\'%3E%3Cpath d=\'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z\'/%3E%3C/svg%3E")';
+                    marker.style.backgroundSize = 'cover';
+                    marker.style.cursor = 'pointer';
+
+                    // Create popup
+                    const popup = new mapboxgl.Popup({ offset: 25 })
+                        .setHTML(`<h3 style="color: #1a120b; margin: 0;">${location.name}</h3><p style="color: #3c2a21; margin: 5px 0 0;">${location.region}</p>`);
+
+                    // Add marker to map
+                    new mapboxgl.Marker(marker)
+                        .setLngLat(location.coordinates)
+                        .setPopup(popup)
+                        .addTo(map);
+                });
+                map.on('load', () => {
+                    // Add region source
+                    map.addSource('wine-regions', {
+                        type: 'geojson',
+                        data: '/regions.geojson'
+                    });
+
+                    // Add transparent fill layer
+                    map.addLayer({
+                        id: 'region-fills',
+                        type: 'fill',
+                        source: 'wine-regions',
+                        paint: {
+                            'fill-opacity': 0
+                        }
+                    });
+
+                    // Add colored borders for each region
+                    map.addLayer({
+                        id: 'region-borders',
+                        type: 'line',
+                        source: 'wine-regions',
+                        paint: {
+                            'line-color': [
+                                'match',
+                                ['get', 'region'],
+                                'Bordeaux', '#6B2D2D',
+                                'Bourgogne', '#4A1E4A',
+                                'Alsace', '#bea356',
+                                'Vallée de la Loire', '#9cb7c6',
+                                'Provence', '#F4A8C2',
+                                'Sud-Ouest', '#D88C3A',
+                                'Corse', '#A6A6A6',
+                                'Champagne', '#c5b792',
+                                'Jura', '#8B3A3A',
+                                'Savoie', '#616364',
+                                'Languedoc-Roussillon', '#7B5E9B',
+                                'Beaujolais', '#E63900',
+                                'Vallée du Rhône méridional', '#D94F3A',
+                                'Vallée du Rhône septentrional', '#A63A3A',
+                                /* default color */ '#CCC'
+                            ],
+                            'line-width': 1
+                        }
+                    });
+                    });
+                    
+                    // Create legend after map is loaded
+                    const legend = document.getElementById('legend');
+                    const regions = [
+                    { name: 'Bordeaux', color: '#6B2D2D' }, // Deep red, like a Bordeaux wine
+                    { name: 'Bourgogne', color: '#4A1E4A' }, // Dark purple, reminiscent of Pinot Noir
+                    { name: 'Alsace', color: '#bea356' }, // Pale gold, for crisp whites like Riesling
+                    { name: 'Vallée de la Loire', color: '#9cb7c6' }, // Pale blue with a hint of sparkle
+                    { name: 'Provence', color: '#F4A8C2' }, // Soft pink, like a Provençal rosé
+                    { name: 'Sud-Ouest', color: '#D88C3A' }, // Warm terracotta, earthy tones
+                    { name: 'Corse', color: '#A6A6A6' }, // Neutral gray, for a rugged island vibe
+                    { name: 'Champagne', color: '#c5b792' }, // Soft champagne gold, for sparkling wines
+                    { name: 'Jura', color: '#8B3A3A' }, // Rustic red-brown, for oxidative wines
+                    { name: 'Savoie', color: '#616364' }, // Cool blue, for alpine freshness
+                    { name: 'Languedoc-Roussillon', color: '#7B5E9B' }, // Muted purple, for robust reds
+                    { name: 'Beaujolais', color: '#E63900' }, // Vibrant red, for fruity Gamay
+                    { name: 'Vallée du Rhône méridional', color: '#D94F3A' }, // Warm red, for southern Rhône blends
+                    { name: 'Vallée du Rhône septentrional', color: '#A63A3A' }, // Slightly darker red, for northern Rhône Syrah
+                    ];
+                    
+                    regions.forEach(region => {
+                        const span = document.createElement('span');
+                        span.style.background = region.color;
+                        span.textContent = region.name;
+                        span.style.cursor = 'pointer'; // Add pointer cursor to indicate interactivity
+                        legend.appendChild(span);
+                        
+                        // Function to highlight a region
+                        const highlightRegion = () => {
+                            // Highlight this region on the map
+                            map.setPaintProperty('region-borders', 'line-width', [
+                                'match',
+                                ['get', 'region'],
+                                region.name, 3, // Make the selected region's border thicker
+                                1 // Keep other regions with normal width
+                            ]);
+                            
+                            map.setPaintProperty('region-fills', 'fill-opacity', [
+                                'match',
+                                ['get', 'region'],
+                                region.name, 0.3, // Add slight fill opacity to the selected region
+                                0 // Keep other regions transparent
+                            ]);
+                            
+                            map.setPaintProperty('region-fills', 'fill-color', [
+                                'match',
+                                ['get', 'region'],
+                                region.name, region.color,
+                                '#CCC' // Default color for other regions
+                            ]);
+                            
+                            // Highlight this legend item and mute others
+                            document.querySelectorAll('#legend span').forEach(item => {
+                                if (item !== span) {
+                                    item.classList.add('muted');
+                                } else {
+                                    item.classList.add('highlighted');
+                                }
+                            });
+                        };
+                        
+                        // Function to reset all regions
+                        const resetRegions = () => {
+                            // Reset map styles
+                            map.setPaintProperty('region-borders', 'line-width', 1);
+                            map.setPaintProperty('region-fills', 'fill-opacity', 0);
+                            
+                            // Reset legend styles
+                            document.querySelectorAll('#legend span').forEach(item => {
+                                item.classList.remove('muted');
+                                item.classList.remove('highlighted');
+                            });
+                        };
+                        
+                        // Track if a region is currently selected (for mobile)
+                        let isSelected = false;
+                        
+                        // Add hover events for desktop
+                        span.addEventListener('mouseenter', highlightRegion);
+                        span.addEventListener('mouseleave', () => {
+                            // Only reset if not in "selected" state from a click
+                            if (!isSelected) {
+                                resetRegions();
+                            }
+                        });
+                        
+                        // Add click/touch events for mobile
+                        span.addEventListener('click', () => {
+                            if (isSelected) {
+                                // If already selected, deselect it
+                                resetRegions();
+                                isSelected = false;
+                            } else {
+                                // First reset any previously selected region
+                                resetRegions();
+                                // Then highlight this region
+                                highlightRegion();
+                                isSelected = true;
+                            }
+                        });
+                    });
+                })
+            .catch(error => console.error('Error fetching Mapbox token:', error));
+    </script>
     <script src="/results.js"></script>
 </body>
 </html>

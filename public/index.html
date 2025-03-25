@@ -57,11 +57,11 @@
             
             <!-- Question 3 -->
             <div class="question-group">
-                <h2>3. Quels sont les moments pendant lesquels vous aimez ouvrir une bouteille de vin chez vous ?</h2>
+                <h2>3. Sélectionnez ci-dessous deux moments privilégiés pour ouvrir une bouteille de vin chez vous :</h2>
                 <label>
                     <input type="checkbox" name="3.moments" value="apero">
                     <span class="custom-radio"></span>
-                    a. Lors d'apéros
+                    a. A l'apéro!
                 </label>
                 <label>
                     <input type="checkbox" name="3.moments" value="repas_semaine">
@@ -71,27 +71,17 @@
                 <label>
                     <input type="checkbox" name="3.moments" value="repas_weekend">
                     <span class="custom-radio"></span>
-                    c. Pendant les repas le weekend
+                    c. Le weekend, autour d'un bon repas avec des amis
                 </label>
                 <label>
-                    <input type="checkbox" name="3.moments" value="soiree">
+                    <input type="checkbox" name="3.moments" value="occasions">
                     <span class="custom-radio"></span>
-                    d. Lors de soirées entre amis
-                </label>
-                <label>
-                    <input type="checkbox" name="3.moments" value="romantique">
-                    <span class="custom-radio"></span>
-                    e. Pour un moment romantique
-                </label>
-                <label>
-                    <input type="checkbox" name="3.moments" value="detente">
-                    <span class="custom-radio"></span>
-                    f. Pour un moment de détente
+                    d. Pour des occasions spéciales (anniversaire, fête...)
                 </label>
                 <label>
                     <input type="checkbox" name="3.moments" value="autre">
                     <span class="custom-radio"></span>
-                    g. Autre - Précisez :
+                    e. Autre - (par exemple, devant un film, en lisant un livre)
                 </label>
                 <input type="text" name="autre_moment" class="hidden">
             </div>
@@ -102,13 +92,13 @@
                 <p>Appuyez tour à tour sur chaque famille. Le classement 1 sera pour celle que vous consommez le plus, 4 pour celle que vous consommez le moins.</p>
                 <div class="ranking-system" id="wineRanking">
                     <div class="ranking-item" data-value="blanc">
-                        <span>Vin Blanc tranquille</span>
+                        <span>Vin Blanc tranquille (sans bulles)</span>
                     </div>
                     <div class="ranking-item" data-value="rouge">
                         <span>Vin Rouge</span>
                     </div>
                     <div class="ranking-item" data-value="petillant">
-                        <span>Vin Pétillant</span>
+                        <span>Vin Pétillant (Champagne, crémant, prosecco)</span>
                     </div>
                     <div class="ranking-item" data-value="rose">
                         <span>Vin Rosé</span>
@@ -222,95 +212,20 @@
                             </div>
                         </div>
                         
-                    </div>
-                    <div class="wine-type">
-                        <h3>Vins Pétillants</h3>
-                        <p>Sur une échelle de 1 à 5 où 1 signifie pas du tout et 5 énormément, indiquez à quel point vous aimez ces différents styles de vin :</p>
-                        
-                        <div class="rating-item">
-                            <span>a. Fruité (ex : notes de pomme, poire, agrumes, fruits exotiques)</span>
-                            <div class="rating-scale" data-name="5f.petillant_fruite">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
-                        <div class="rating-item">
-                            <span>b. Brioché, toasté (ex : pain grillé, noisette, levure, biscuit)</span>
-                            <div class="rating-scale" data-name="5g.petillant_brioche">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
-                        <div class="rating-item">
-                            <span>c. Minéral (ex : notes salines, pierre à fusil, crayeux)</span>
-                            <div class="rating-scale" data-name="5h.petillant_mineral">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
-                        <div class="rating-item">
-                            <span>d. Vif et acide (sensation de fraîcheur et tension en bouche)</span>
-                            <div class="rating-scale" data-name="5i.petillant_acidite">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
-                        <div class="rating-item">
-                            <span>e. Dosage (Sec vs Sucré) (préférence pour un extra-brut, brut, demi-sec…)</span>
-                            <div class="rating-scale" data-name="5j.petillant_dosage">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wine-type">
-                        <h3>Vins Rosés</h3>
-                        <p>Sur une échelle de 1 à 5 où 1 signifie pas du tout et 5 énormément, indiquez à quel point vous aimez ces différents styles de vin :</p>
-                        <div class="rating-item">
-                            <span>a. Fruité</span>
-                            <div class="rating-scale" data-name="5k.rose_fruite">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
-                        <div class="rating-item">
-                            <span>b. Floral</span>
-                            <div class="rating-scale" data-name="5l.rose_floral">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
-                        <div class="rating-item">
-                            <span>c. Minéral</span>
-                            <div class="rating-scale" data-name="5m.rose_mineral">
-                                <button type="button" class="rating-btn" data-value="1">1</button>
-                                <button type="button" class="rating-btn" data-value="2">2</button>
-                                <button type="button" class="rating-btn" data-value="3">3</button>
-                                <button type="button" class="rating-btn" data-value="4">4</button>
-                                <button type="button" class="rating-btn" data-value="5">5</button>
-                            </div>
-                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <!-- Question 6 -->
+            <div class="question-group">
+                <h2>6. De plus en plus de vignerons se tournent vers une viticulture raisonnée ou biologique, comment privilégiez-vous les vins issus de ces méthodes ? </h2>
+                <div class="rating-item">
+                    <span>Notez votre préférence sur une échelle de 1 (très faible) à 5 (très fort)</span>
+                    <div class="rating-scale" data-name="6.conduite">
+                        <button type="button" class="rating-btn" data-value="1">1</button>
+                        <button type="button" class="rating-btn" data-value="2">2</button>
+                        <button type="button" class="rating-btn" data-value="3">3</button>
+                        <button type="button" class="rating-btn" data-value="4">4</button>
+                        <button type="button" class="rating-btn" data-value="5">5</button>
                     </div>
                 </div>
             </div>
@@ -319,45 +234,45 @@
             <div class="question-group debutant-only hidden">
                 <h3>Questions pour consommateurs débutants</h3>
                 <div class="question-section">
-                    <h2>6. Parmi les régions ci-dessous, pouvez-vous sélectionner 2 de vos régions viticoles préférées ? Ou que vous consommez le plus souvent ?</h2>
+                    <h2>7. Parmi les régions ci-dessous, pouvez-vous sélectionner 2 de vos régions viticoles préférées ? Ou que vous consommez le plus souvent ?</h2>
                     <p>(Sélectionnez jusqu'à 2 options)</p>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Bourgogne">
+                        <input type="checkbox" name="7.debutant_regions" value="Bourgogne">
                         <span class="custom-radio"></span>
                         Bourgogne
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Bordeaux">
+                        <input type="checkbox" name="7.debutant_regions" value="Bordeaux">
                         <span class="custom-radio"></span>
                         Bordeaux
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Vallée du Rhône">
+                        <input type="checkbox" name="7.debutant_regions" value="Vallée du Rhône">
                         <span class="custom-radio"></span>
                         Vallée du Rhône
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Beaujolais">
+                        <input type="checkbox" name="7.debutant_regions" value="Beaujolais">
                         <span class="custom-radio"></span>
                         Beaujolais
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Provence">
+                        <input type="checkbox" name="7.debutant_regions" value="Provence">
                         <span class="custom-radio"></span>
                         Provence
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Champagne">
+                        <input type="checkbox" name="7.debutant_regions" value="Champagne">
                         <span class="custom-radio"></span>
                         Champagne
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Alsace">
+                        <input type="checkbox" name="7.debutant_regions" value="Alsace">
                         <span class="custom-radio"></span>
                         Alsace
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Vallée de la Loire">
+                        <input type="checkbox" name="7.debutant_regions" value="Vallée de la Loire">
                         <span class="custom-radio"></span>
                         Vallée de la Loire
                     </label>
@@ -367,69 +282,61 @@
                         Languedoc-Roussillon
                     </label>
                     <label>
-                        <input type="checkbox" name="6.debutant_regions" value="Pas de régions préférées">
+                        <input type="checkbox" name="7.debutant_regions" value="Pas de régions préférées">
                         <span class="custom-radio"></span>
                         Je n'ai pas aujourd'hui de régions préférées
                     </label>
                 </div>
                 <div class="question-section">
-                    <h2>7. Où avez-vous l'habitude d'acheter du vin ?</h2>
+                    <h2>8. Où avez-vous l'habitude d'acheter du vin ?</h2>
                     <label>
-                        <input type="checkbox" name="7.achat_emplacement" value="caviste">
+                        <input type="checkbox" name="8.achat_emplacement" value="caviste">
                         <span class="custom-radio"></span>
                         Caviste
                     </label>
                     <label>
-                        <input type="checkbox" name="7.achat_emplacement" value="supermarket">
+                        <input type="checkbox" name="8.achat_emplacement" value="supermarket">
                         <span class="custom-radio"></span>
                         Grande distribution
                     </label>
                     <label>
-                        <input type="checkbox" name="7.achat_emplacement" value="direct">
+                        <input type="checkbox" name="8.achat_emplacement" value="direct">
                         <span class="custom-radio"></span>
                         En direct propriété
                     </label>
                     <label>
-                        <input type="checkbox" name="7.achat_emplacement" value="foires">
+                        <input type="checkbox" name="8.achat_emplacement" value="foires">
                         <span class="custom-radio"></span>
                         Foires aux vins
                     </label>
                     <label>
-                        <input type="checkbox" name="7.achat_emplacement" value="internet">
+                        <input type="checkbox" name="8.achat_emplacement" value="internet">
                         <span class="custom-radio"></span>
                         Internet
                     </label>
                 </div>
                 <div class="question-section">
-                    <h2>8. Quel est votre budget moyen pour une bouteille à ouvrir le week-end entre amis ?</h2>
+                    <h2>9. Quel est votre budget moyen pour une bouteille à ouvrir le week-end entre amis ?</h2>
                     <label>
-                        <input type="radio" name="8.budget_weekend" value="<15">
+                        <input type="radio" name="9.budget_weekend" value="<15">
                         <span class="custom-radio"></span>
                         Moins de 15€
                     </label>
                     <label>
-                        <input type="radio" name="8.budget_weekend" value="15-30">
+                        <input type="radio" name="9.budget_weekend" value="15-30">
                         <span class="custom-radio"></span>
                         Entre 15 et 30€
                     </label>
                     <label>
-                        <input type="radio" name="8.budget_weekend" value="30-60">
+                        <input type="radio" name="9.budget_weekend" value="30-60">
                         <span class="custom-radio"></span>
                         Entre 30 et 60€
                     </label>
                     <label>
-                        <input type="radio" name="8.budget_weekend" value=">60">
+                        <input type="radio" name="9.budget_weekend" value=">60">
                         <span class="custom-radio"></span>
                         Plus de 60€
                     </label>
-                </div>
-                <div class="question-section">
-                    <h2>9. Où avez-vous l'habitude de stocker vos vins ?</h2>
-                    <textarea name="9.stockage" rows="4"></textarea>
-                </div>
-                <div class="question-section">
-                    <h2>10. Avez-vous en tête un souvenir particulier autour d'une bouteille de vin. En quoi ce souvenir est-il mémorable ?</h2>
-                    <textarea name="10.memoire" rows="4"></textarea>
                 </div>
             </div>
             
@@ -437,101 +344,93 @@
             <div class="question-group connaisseur-only hidden">
                 <h3>Questions pour consommateurs connaisseurs</h3>
                 <div class="question-section">
-                    <h2>6. Quelles sont, parmi celles listées ci-dessous, vos 2 régions viticoles préférées ?</h2>
+                    <h2>7. Quelles sont, parmi celles listées ci-dessous, vos 2 régions viticoles préférées ?</h2>
                     <p>(Sélectionnez jusqu'à 2 options)</p>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Bourgogne">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Bourgogne">
                         <span class="custom-radio"></span>
                         Bourgogne
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Bordeaux">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Bordeaux">
                         <span class="custom-radio"></span>
                         Bordeaux
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Vallée du Rhône">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Vallée du Rhône">
                         <span class="custom-radio"></span>
                         Vallée du Rhône
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Beaujolais">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Beaujolais">
                         <span class="custom-radio"></span>
                         Beaujolais
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Provence">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Provence">
                         <span class="custom-radio"></span>
                         Provence
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Champagne">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Champagne">
                         <span class="custom-radio"></span>
                         Champagne
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Alsace">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Alsace">
                         <span class="custom-radio"></span>
                         Alsace
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Vallée de la Loire">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Vallée de la Loire">
                         <span class="custom-radio"></span>
                         Vallée de la Loire
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Languedoc-Roussillon">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Languedoc-Roussillon">
                         <span class="custom-radio"></span>
                         Languedoc-Roussillon
                     </label>
                     <label>
-                        <input type="checkbox" name="6.connaisseur_regions" value="Autres">
+                        <input type="checkbox" name="7.connaisseur_regions" value="Autres">
                         <span class="custom-radio"></span>
                         Autres (Corse ou Sud-Ouest par exemple)
                     </label>
                 </div>
                 <div class="question-section">
-                    <h2>7. Parmi les 2 régions sélectionnées, une appellation (AOC) en particulier a-t-elle une place de choix dans votre cave ? Éventuellement un domaine ou un château que vous appréciez tout particulièrement ?</h2>
-                    <textarea name="7.favori_aoc_domain_connaisseur" rows="4"></textarea>
+                    <h2>8. Parmi les 2 régions sélectionnées, une appellation (AOC) en particulier a-t-elle une place de choix dans votre cave ? Éventuellement un domaine ou un château que vous appréciez tout particulièrement ?</h2>
+                    <textarea name="8.favori_aoc_domain_connaisseur" rows="4"></textarea>
                 </div>
                 <div class="question-section">
-                    <h2>8. Seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?</h2>
+                    <h2>9. Seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?</h2>
                     <label>
-                        <input type="radio" name="8.decouvrir_nouvelle_regions" value="oui">
+                        <input type="radio" name="9.decouvrir_nouvelle_regions" value="oui">
                         <span class="custom-radio"></span>
                         Oui
                     </label>
                     <label>
-                        <input type="radio" name="8.decouvrir_nouvelle_regions" value="non">
+                        <input type="radio" name="9.decouvrir_nouvelle_regions" value="non">
                         <span class="custom-radio"></span>
                         Non
                     </label>
                 </div>
                 <div class="question-section">
-                    <h2>9. Pour un vin de garde, quel serait votre budget moyen ?</h2>
+                    <h2>10. Pour un vin de garde, quel serait votre budget moyen ?</h2>
                     <label>
-                        <input type="radio" name="9.budget_garde" value="20-50">
+                        <input type="radio" name="10.budget_garde" value="20-50">
                         <span class="custom-radio"></span>
                         Entre 20 et 50€
                     </label>
                     <label>
-                        <input type="radio" name="9.budget_garde" value="50-100">
+                        <input type="radio" name="10.budget_garde" value="50-100">
                         <span class="custom-radio"></span>
                         Entre 50 et 100€
                     </label>
                     <label>
-                        <input type="radio" name="9.budget_garde" value=">100">
+                        <input type="radio" name="10.budget_garde" value=">100">
                         <span class="custom-radio"></span>
                         Plus de 100€
                     </label>
-                </div>
-                <div class="question-section">
-                    <h2>10. Où avez-vous l'habitude de stocker vos vins ?</h2>
-                    <textarea name="10.stockage_connaisseur" rows="4"></textarea>
-                </div>
-                <div class="question-section">
-                    <h2>11. Avez-vous en tête un souvenir particulier autour d'une bouteille de vin. En quoi ce souvenir est-il mémorable ?</h2>
-                    <textarea name="11.memoire_connaisseur" rows="4"></textarea>
                 </div>
             </div>
             
@@ -539,127 +438,88 @@
             <div class="question-group expert-only hidden">
                 <h3>Questions pour consommateurs experts</h3>
                 <div class="question-section">
-                    <h2>6. Quelles sont, parmi celles listées ci-dessous, vos 2 régions viticoles préférées ?</h2>
+                    <h2>7. Quelles sont, parmi celles listées ci-dessous, vos 2 régions viticoles préférées ?</h2>
                     <p>(Sélectionnez jusqu'à 2 options)</p>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="bourgogne">
+                        <input type="checkbox" name="7.expert_regions" value="bourgogne">
                         <span class="custom-radio"></span>
                         Bourgogne
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="bordeaux">
+                        <input type="checkbox" name="7.expert_regions" value="bordeaux">
                         <span class="custom-radio"></span>
                         Bordeaux
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="rhone">
+                        <input type="checkbox" name="7.expert_regions" value="rhone">
                         <span class="custom-radio"></span>
                         Vallée du Rhône
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="beaujolais">
+                        <input type="checkbox" name="7.expert_regions" value="beaujolais">
                         <span class="custom-radio"></span>
                         Beaujolais
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="provence">
+                        <input type="checkbox" name="7.expert_regions" value="provence">
                         <span class="custom-radio"></span>
                         Provence
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="champagne">
+                        <input type="checkbox" name="7.expert_regions" value="champagne">
                         <span class="custom-radio"></span>
                         Champagne
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="alsace">
+                        <input type="checkbox" name="7.expert_regions" value="alsace">
                         <span class="custom-radio"></span>
                         Alsace
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="loire">
+                        <input type="checkbox" name="7.expert_regions" value="loire">
                         <span class="custom-radio"></span>
                         Vallée de la Loire
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="languedoc">
+                        <input type="checkbox" name="7.expert_regions" value="languedoc">
                         <span class="custom-radio"></span>
                         Languedoc-Roussillon
                     </label>
                     <label>
-                        <input type="checkbox" name="6.expert_regions" value="other">
+                        <input type="checkbox" name="7.expert_regions" value="other">
                         <span class="custom-radio"></span>
                         Autres (Corse ou Sud-Ouest par exemple)
                     </label>
                 </div>
                 <div class="question-section">
-                    <h2>7. Parmi les 2 régions sélectionnées, quelle appellation (AOC) en particulier a-t-elle une place de choix dans votre cave ? Quels domaines ou châteaux appréciez-vous tout particulièrement ?</h2>
-                    <textarea name="7.favori_aoc_domain_expert" rows="4"></textarea>
+                    <h2>8. Parmi les 2 régions sélectionnées, quelle appellation (AOC) en particulier a-t-elle une place de choix dans votre cave ? Quels domaines ou châteaux appréciez-vous tout particulièrement ?</h2>
+                    <textarea name="8.favori_aoc_domain_expert" rows="4"></textarea>
                 </div>
                 <div class="question-section">
-                    <h2>8. Pour un vin de garde, quel serait votre budget moyen ?</h2>
+                    <h2>9. Pour un vin de garde, quel serait votre budget moyen ?</h2>
                     <label>
-                        <input type="radio" name="8.budget_garde_expert" value="20-50">
+                        <input type="radio" name="9.budget_garde_expert" value="20-50">
                         <span class="custom-radio"></span>
                         Entre 20 et 50€
                     </label>
                     <label>
-                        <input type="radio" name="8.budget_garde_expert" value="50-100">
+                        <input type="radio" name="9.budget_garde_expert" value="50-100">
                         <span class="custom-radio"></span>
                         Entre 50 et 100€
                     </label>
                     <label>
-                        <input type="radio" name="8.budget_garde_expert" value=">100">
+                        <input type="radio" name="9.budget_garde_expert" value=">100">
                         <span class="custom-radio"></span>
                         Plus de 100€
                     </label>
+                </div>  
+                <div class="question-section">
+                    <h2>10. Pouvez-vous nous raconter quelles bouteilles vous ont particulièrement marqué et pourquoi ?</h2>
+                    <textarea name="10.bouteilles_memorables" rows="4"></textarea>
                 </div>
                 <div class="question-section">
-                    <h2>9. Achetez-vous du vin dans une démarche d'investissement ou de constitution de patrimoine ?</h2>
-                    <label>
-                        <input type="radio" name="9.investissement" value="oui">
-                        <span class="custom-radio"></span>
-                        Oui
-                    </label>
-                    <label>
-                        <input type="radio" name="9.investissement" value="non">
-                        <span class="custom-radio"></span>
-                        Non
-                    </label>
-                </div>
-                <div class="question-section">
-                    <h2>10. Avez-vous des bouteilles en cave que vous souhaiteriez vendre pour libérer de la place et les remplacer par d'autres flacons ?</h2>
-                    <label>
-                        <input type="radio" name="10.vendre_bouteilles" value="oui">
-                        <span class="custom-radio"></span>
-                        Oui
-                    </label>
-                    <label>
-                        <input type="radio" name="10.vendre_bouteilles" value="non">
-                        <span class="custom-radio"></span>
-                        Non
-                    </label>
-                </div>
-                <div class="question-section">
-                    <h2>11. Avez-vous déjà acheté des vins de Bordeaux en primeurs ?</h2>
-                    <label>
-                        <input type="radio" name="11.primeurs" value="yes">
-                        <span class="custom-radio"></span>
-                        Oui
-                    </label>
-                    <label>
-                        <input type="radio" name="11.primeurs" value="no">
-                        <span class="custom-radio"></span>
-                        Non
-                    </label>
-                </div>
-                <div class="question-section">
-                    <h2>12. Pouvez-vous nous raconter quelles bouteilles vous ont particulièrement marqué et pourquoi ?</h2>
-                    <textarea name="12.bouteilles_memorables" rows="4"></textarea>
-                </div>
-                <div class="question-section">
-                    <h2>13. Dites en quelques mots quel serait votre cave idéale ? (région dominante, % vins de garde vs prêt à boire, % rouge vs blanc, durée de garde maximum)</h2>
-                    <textarea name="13.cave_ideale" rows="4"></textarea>
+                    <h2>11. Dites en quelques mots quel serait votre cave idéale ? (région dominante, % vins de garde vs prêt à boire, % rouge vs blanc, durée de garde maximum)</h2>
+                    <textarea name="11.cave_ideale" rows="4"></textarea>
                 </div>
             </div>
             
