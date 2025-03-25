@@ -127,9 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    limitCheckboxes(document.querySelectorAll('input[name="6.debutant_regions"]'), 2);
-    limitCheckboxes(document.querySelectorAll('input[name="6.connaisseur_regions"]'), 2);
-    limitCheckboxes(document.querySelectorAll('input[name="6.expert_regions"]'), 2);
+    limitCheckboxes(document.querySelectorAll('input[name="7.debutant_regions"]'), 2);
+    limitCheckboxes(document.querySelectorAll('input[name="7.connaisseur_regions"]'), 2);
+    limitCheckboxes(document.querySelectorAll('input[name="7.expert_regions"]'), 2);
     
     // Add loading container after the form
     const loadingContainer = document.createElement('div');
@@ -288,7 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Add wine ranking if present (Question 4)
             const wineOrder = document.getElementById('wineOrder');
-            console.log(wineOrder);
             if (wineOrder && wineOrder.value) {
                 formattedData['4. Classement'] = wineOrder.value;
             }
@@ -315,6 +314,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (Object.keys(winePreferences).length > 0) {
                 formattedData['5. Préférences de goût'] = winePreferences;
+            }
+
+            // Add eco-friendly wine preference from question 6
+            const ecoScale = document.querySelector('.rating-scale[data-name="6.conduite"]');
+            const ecoActiveBtn = ecoScale?.querySelector('.rating-btn.active');
+            if (ecoActiveBtn) {
+                formattedData['6. Préférence viticulture raisonnée/biologique'] = ecoActiveBtn.dataset.value;
             }
             
             updateStatus('Analyse des résultats...');

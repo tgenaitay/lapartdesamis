@@ -81,10 +81,14 @@ Our selection process works in 3 clear phases:
 
 2. **Scoring**  
    Each wine earns points based on:
-   - **Color priority**: 4x points for 1st choice color, 3x for 2nd, etc, with a factor of 10
-   - **Taste match**: Matches wine characteristics to user preferences  
-     *(e.g. "Fruity reds" get boosted if user prefers fruity flavors)*
-   - **Quality score**: Wine is Mine internal rating (note_wim) gives bonus points, with a factor of 5
+   - **Color priority**: 4x points for 1st choice color, 3x for 2nd, etc, with a factor of 10. This is the basis of the score.
+      *(e.g. 40 points for red, 30 points for white...)*
+   - **Taste match**: Matches wine characteristics to user preferences, multiplying user's choice with wine data.  
+     *(e.g. "Red fruity wines at 5" get boosted +25 points if user responded liking fruity flavors 5/5)*
+   - **Quality score**: Wine is Mine internal rating (note_wim) gives bonus points, with a factor of 5.
+      *(e.g. A wine with a WIM note of 10 will get +50 points)*
+   - **Methodology match**: Matches wine production methods to user preferences
+     *(e.g. "Biodynamic" wines get additional +20 points for high preference 4/5)*,
 
 3. **Final selection**  
    - up to 20 potential matches are identified
