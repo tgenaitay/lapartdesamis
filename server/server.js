@@ -16,6 +16,11 @@ app.use(cors({
 // Parse JSON bodies
 app.use(express.json());
 
+// Endpoint to securely provide Mapbox token
+app.get('/api/mapbox-token', (req, res) => {
+    res.json({ token: process.env.MAPBOX_KEY });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Error:', err.stack);
