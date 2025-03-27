@@ -70,7 +70,7 @@ app.post('/submit', async (req, res) => {
         if (error.code === 'ETIMEDOUT' || error.code === 'ESOCKETTIMEDOUT') {
             res.status(504).json({ 
                 error: 'Gateway Timeout', 
-                message: 'The server is currently busy processing requests. Please try again in a few minutes.' 
+                message: 'Le serveur est actuellement occupé à traiter des requêtes. Veuillez réessayer dans quelques minutes.'
             });
         } else {
             res.status(500).json({ error: 'Failed to process form submission' });

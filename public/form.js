@@ -342,7 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'error-message';
                     errorDiv.innerHTML = `
-                        <h3>Server Timeout</h3>
                         <p>${errorData.message}</p>
                         <button onclick="this.parentElement.remove()">Close</button>
                     `;
