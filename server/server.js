@@ -59,11 +59,22 @@ app.post('/submit', async (req, res) => {
             
             res.json(response);
         } else {
-            res.status(500).json({ error: llmResult.error });
+            res.status(504).json({ 
+                error: 'Gateway Timeout', 
+                message: 'The server is currently busy processing requests. Please try again in a few minutes.' 
+            });
         }
     } catch (error) {
         console.error('Error processing form submission:', error);
-        res.status(500).json({ error: 'Failed to process form submission' });
+        // Check if it's a timeout error
+        if (error.code === 'ETIMEDOUT' || error.code === 'ESOCKETTIMEDOUT') {
+            res.status(504).json({ 
+                error: 'Gateway Timeout', 
+                message: 'The server is currently busy processing requests. Please try again in a few minutes.' 
+            });
+        } else {
+            res.status(500).json({ error: 'Failed to process form submission' });
+        }
     }
 });
 

@@ -336,7 +336,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             if (!response.ok) {
-                throw new Error(`Erreur dans la recherche, HTTP status: ${response.status}`);
+                const errorData = await response.json();
+                if (response.status === 504) {
+                    // Create or show a timeout error message
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.innerHTML = `
+                        <h3>Server Timeout</h3>
+                        <p>${errorData.message}</p>
+                        <button onclick="this.parentElement.remove()">Close</button>
+                    `;
+                    form.insertBefore(errorDiv, form.firstChild);
+                } else {
+                    throw new Error(errorData.error || 'An error occurred');
+                }
+                return;
             }
             
             const data = await response.json();
@@ -349,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (error) {
             showError(error.message);
+            console.error('Error:', error);
             submitButton.style.display = 'block';
             loadingContainer.style.display = 'none';
             return;

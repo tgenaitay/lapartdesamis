@@ -41,7 +41,7 @@ To run the development server (nodemon used for hot reload):
 
 ```bash
 cd server
-npm start
+npm run dev
 ```
 
 ## Deployment
