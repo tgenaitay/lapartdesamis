@@ -175,7 +175,7 @@ class LLMService {
            "     - \"rouges\" : \"fruite\", \"épice\", \"boise\", \"tannique\".\n" +
            "     - \"blancs\" : \"fruite\", \"mineral\", \"beurre\", \"boise\", \"sucrosite\".\n" +
            "   - Les notes indiquent l'intensité de la préférence (1 = aversion, 5 = forte préférence).\n\n" +
-           "   - De la question 6 (\"Préférence viticulture raisonnée/biologique\"), extrayez la note (1-5)\n" +
+           "   - De la question 6 (\"Importance viticulture raisonnée/biologique\"), extrayez la note (1-5)\n" +
            "      - \"conduite\" : \nnote.\n" +
            "4. **Sortie** :\n" +
            "   - Générez un objet JSON 100% valide pour la fonction `query_wines` avec `filters`, `color_weights`, et `preferences`.\n\n" +
