@@ -93,9 +93,10 @@ async function fetchAndDisplayWines() {
                     <p class="cta-text">... et ce n'est que le début. Nous pouvons maintenant itérer ensemble sur cette courte sélection. <br> Utilisez notre calendrier pour réserver un appel à votre convenance !</p>
                     <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>
                 </div>
+                ${displayWines(wines).outerHTML}
+                <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>
             </div>
         `;
-        document.getElementById('content').appendChild(displayWines(wines));
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('content').innerHTML = `
