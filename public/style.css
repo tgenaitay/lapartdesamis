@@ -404,3 +404,31 @@ Author: Gemini
    .cta-button:hover {
        transform: scale(1.05);
    }
+   
+   .error-message {
+       background-color: #fff3f3;
+       border: 1px solid #ff9999;
+       border-radius: 4px;
+       padding: 15px;
+       margin: 20px 0;
+       text-align: center;
+   }
+   
+   .error-message h3 {
+       color: #cc0000;
+       margin: 0 0 10px 0;
+   }
+   
+   .error-message button {
+       background-color: #cc0000;
+       color: white;
+       border: none;
+       padding: 5px 15px;
+       border-radius: 4px;
+       margin-top: 10px;
+       cursor: pointer;
+   }
+   
+   .error-message button:hover {
+       background-color: #990000;
+   }

@@ -64,35 +64,38 @@ All feedback welcome.
 
 ## Known issues
 
-- Llama 3.3 randomly outputs a malformed native function call in its content instead of a regular tool call. Happens 1 out of 5 times. Moving away from Llama to e.g Gemini should make it more stable.
+- Llama 3.3 randomly outputs a malformed native function call in its content instead of a regular tool call. Happens 1 out of 5 times.
 
 ## Wine Selection Logic 🍇
 
 Our selection process works in 3 clear phases:
 
 1. **Initial filtering**  
-   We first look for up to 20 wines that may match :
+   
+   We first look for up to 20 wines that may match filters:
    - Preferred regions (e.g. Burgundy/Provence)
    - Specific appellations (e.g. Meursault)
    - Favorite domains/châteaux
-   - Price range preferences
+   - Budget range
 
-   If the initial search resulted to less than 10 wines, or if the connoisseurs let us broaden their horizons, we expand the search without filters - except for price.
+   If the initial search resulted to less than 10 wines, or if the connoisseurs let us broaden their regional horizons, we run a second query without any filters (except for price min and max).
+
+   NB to avoid missing great opportunities, we lower the minimum wine price by 10EUR compared to the budget given by user.
 
 2. **Scoring**  
-   Each wine earns points based on:
-   - **Color priority**: 4x points for 1st choice color, 3x for 2nd, etc, with a factor of 10. This is the basis of the score.
+   Each wine found in our initial search is earning points based on:
+   - **1. Color priority**: 4x points for 1st choice color, 3x for 2nd, etc, multiple by a factor of 10. This is the basis of the score.
       *(e.g. 40 points for red, 30 points for white...)*
-   - **Taste match**: Matches wine characteristics to user preferences, multiplying user's choice with wine data.  
+   - **2. Taste match**: Multiplying user's choice with wine data.  
      *(e.g. "Red fruity wines at 5" get boosted +25 points if user responded liking fruity flavors 5/5)*
-   - **Quality score**: Wine is Mine internal rating (note_wim) gives bonus points, with a factor of 5.
+   - **3. Quality score**: Wine is Mine internal rating (note_wim) multipled by a factor of 5.
       *(e.g. A wine with a WIM note of 10 will get +50 points)*
-   - **Methodology match**: Matches wine production methods to user preferences
+   - **4. Methodology match**: Matches wine production method to user preferences
      *(e.g. "Biodynamic" wines get additional +20 points for high preference 4/5)*,
 
 3. **Final selection**  
-   - up to 20 potential matches are identified
-   - These are re-ranked by total score
-   - Final selection shows the 10 highest-scoring wines
+   - A shortlist of up to 20 potential wines are identified by search
+   - The list gets scored and re-ranked accordingly
+   - Final selection cuts to only the 10 highest-scoring wines from our short list
 
 This ensures recommendations balance personal preferences with best in class wines.

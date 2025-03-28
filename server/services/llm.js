@@ -4,7 +4,7 @@ class LLMService {
     constructor() {
         // Initialize OpenAI client with provider's base URL and API key
         this.client = new OpenAI({
-            baseURL: "https://api.together.xyz/v1/",
+            baseURL: "https://api.together.xyz/v1",
             apiKey: process.env.TOGETHER_API_KEY,
         });
     }
@@ -15,59 +15,59 @@ class LLMService {
             const prompt = this.preparePrompt(formData);
             console.log(prompt);
 
-            const queryWinesTool = {
-                type: "function",
-                function: {
-                    name: "query_wines",
-                    description: "Interroge la base de données pour recommander des vins selon les préférences.",
-                    parameters: {
-                        type: "object",
-                        properties: {
-                            filters: { 
-                                type: "object", 
-                                properties: { 
-                                    regions: { type: "array", items: { type: "string" } },
-                                    more_regions: { type: "boolean" }, 
-                                    prix_max: { type: "number" }, 
-                                    prix_min: { type: "number" }, 
-                                    appellations: { type: "array", items: { type: "string" } }, 
-                                    domaines: { type: "array", items: { type: "string" } } 
+            const queryWinesTool = [{
+                "type": "function",               
+                "function": {
+                    "name": "get_wines",
+                    "description": "Interroge la base de données pour recommander des vins selon les préférences.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "filters": { 
+                                "type": "object", 
+                                "properties": { 
+                                    "regions": { "type": "array", "items": { "type": "string" } },
+                                    "more_regions": { "type": "boolean" }, 
+                                    "prix_max": { "type": "number" }, 
+                                    "prix_min": { "type": "number" }, 
+                                    "appellations": { "type": "array", "items": { "type": "string" } }, 
+                                    "domaines": { "type": "array", "items": { "type": "string" } } 
                                 } },
-                            color_weights: { 
-                                type: "object", 
-                                properties: { 
-                                    rouge: { type: "number" }, 
-                                    blanc: { type: "number" }, 
-                                    rose: { type: "number" }, 
-                                    bulles: { type: "number" } 
+                            "color_weights": { 
+                                "type": "object", 
+                                "properties": { 
+                                    "rouge": { "type": "number" }, 
+                                    "blanc": { "type": "number" }, 
+                                    "rose": { "type": "number" }, 
+                                    "bulles": { "type": "number" } 
                                 } },
-                            preferences: { 
-                                type: "object", 
-                                properties: { 
-                                    rouges: { type: "object", 
-                                        properties: { 
-                                            rouge_fruite: { type: "number" }, 
-                                            rouge_epice: { type: "number" }, 
-                                            rouge_boise: { type: "number" }, 
-                                            rouge_tannique: { type: "number" } 
+                            "preferences": { 
+                                "type": "object", 
+                                "properties": { 
+                                    "rouges": { "type": "object", 
+                                        "properties": { 
+                                            "rouge_fruite": { "type": "number" }, 
+                                            "rouge_epice": { "type": "number" }, 
+                                            "rouge_boise": { "type": "number" }, 
+                                            "rouge_tannique": { "type": "number" } 
                                         } 
                                     },
-                                    blancs: { type: "object", 
-                                        properties: { 
-                                            blanc_fruite: { type: "number" }, 
-                                            blanc_mineral: { type: "number" }, 
-                                            blanc_beurre: { type: "number" }, 
-                                            blanc_boise: { type: "number" },
-                                            blanc_sucrosite: { type: "number" } 
+                                    "blancs": { "type": "object", 
+                                        "properties": { 
+                                            "blanc_fruite": { "type": "number" }, 
+                                            "blanc_mineral": { "type": "number" }, 
+                                            "blanc_beurre": { "type": "number" }, 
+                                            "blanc_boise": { "type": "number" },
+                                            "blanc_sucrosite": { "type": "number" } 
                                         } 
                                     },
-                                    conduite: { type: "number" }                                 
+                                    "conduite": { "type": "number" }                                 
                                 } }
                         },
-                        required: ["filters", "color_weights", "preferences"]
+                        "required": ["filters", "color_weights", "preferences"]
                     }
                 }
-            };
+            }];
 
             // Call the LLM API
             const response = await this.client.chat.completions.create({
@@ -75,20 +75,18 @@ class LLMService {
                 messages: [
                     {
                         role: 'system',
-                        content: 'Vous etes un expert en vin francais. Vous ne parlez que le français. IMPORTANT Vous avez accès à un catalogue de vin et ne pouvez faire des propositions que dans ce catalogue, pas une autre source. Utilisez l\'outil `query_wines` pour structurer vos recommandations. Vous devez répondre avec un JSON 100% valide.'
+                        content: 'Vous etes un expert en vin francais. Vous ne parlez que le français. IMPORTANT Vous avez accès à un catalogue de vin et ne pouvez faire des propositions que dans ce catalogue, pas une autre source. Utilisez l\'outil `get_wines` pour structurer vos recommandations. Vous devez répondre avec un JSON 100% valide.'
                     },
                     {
                         role: 'user',
                         content: prompt
                     }
                 ],
-                temperature: 0,
+                temperature: 0.2,
                 max_tokens: null,
-                repetition_penalty: 1,
-                stop: ["<|eot_id|>","<|eom_id|>"],
                 stream: false,
-                tools: [queryWinesTool],
-                tool_choice: {"type": "function", "function": {"name": "query_wines"}}
+                tools: queryWinesTool,
+                tool_choice: {"type": "function", "function": {"name": "get_wines"}}
             });
 
             const message = response.choices[0].message;
@@ -96,7 +94,7 @@ class LLMService {
             console.log(message.tool_calls);
 
             // Check for tool calls in the standard way
-            if (message.tool_calls && message.tool_calls.length > 0 && message.tool_calls[0].function.name === "query_wines") {
+            if (message.tool_calls && message.tool_calls.length > 0 && message.tool_calls[0].function.name === "get_wines") {
                 const args = JSON.parse(message.tool_calls[0].function.arguments);
                 const recommendations = await this.query_wines(args.filters, args.color_weights, args.preferences);
                 return {
@@ -105,8 +103,8 @@ class LLMService {
                 };
             } 
             // Check for function call embedded in content (Native Llama)
-            else if (message.content && message.content.includes('<function=query_wines>')) {
-                const functionMatch = message.content.match(/<function=query_wines>(.*?)<\/function>/s);
+            else if (message.content && message.content.includes('<function=get_wines>')) {
+                const functionMatch = message.content.match(/<function=get_wines>(.*?)<\/function>/s);
                 if (functionMatch && functionMatch[1]) {
                     try {
                         const args = JSON.parse(functionMatch[1]);
@@ -139,17 +137,7 @@ class LLMService {
     }
 
     preparePrompt(formData) {
-        // Convert form data into a structured prompt
         return "Notre équipe commerciale vient de terminer un rendez-vous avec un client et a fourni le resultat d'un questionnaire. Vous êtes un assistant expert en vins, chargé de recommander les 10 meilleurs vins à ce client en fonction de ses préférences tirées du questionnaire. Les réponses du client sont fournies sous forme de paires clé-valeur au format JSON, avec des variations selon le niveau d'expertise du client ('debutant' ou 'expert' ou 'connaisseur'). Merci d'analyser les préférences du client pour l'aider à constituer une cave. Votre tâche est d'analyser ces préférences." 
-        // + "Retournez uniquement l'appel de la fonction. Ce client est a très fort potentiel commercial, bien prendre le temps de réfléchir avant de formuler l'appel de fonction et bien fermer chaque {."
-        // + "Répondez UNIQUEMENT dans le format suivant sans préfixe ni suffixe :"
-        // + '<function=query_wines>{"filters": {}, "color_weights": {}, "preferences": {}}</function>'
-        // + "Rappel:"
-        // + "- Les appels de fonction DOIVENT suivre le format spécifié, commencer par <function= et se terminer par </function>"
-        // + "- Les paramètres requis DOIVENT être spécifiés"
-        // + "- N'appelez qu'une seule fonction à la fois"
-        // + "- Mettez l'appel de fonction complet sur une seule ligne"
-        // + "- Validez le JSON avec les {} necessaires"
         +
            "**Contexte de la base de données :**\n" +
            "- Table : `wines`\n" +
@@ -159,33 +147,33 @@ class LLMService {
            "**Instructions :**\n" +
            "1. **Filtres** :\n" +
            "   - De la question 7, extrayez les régions préférées (par exemple, \"bourgogne, provence\") sous forme de tableau.\n" +
-           "   - De la question 8 (connaisseurs et experts, pas débutants) :\n" +
+           "   - De la question 8 (connaisseurs et experts, pas pour débutants) :\n" +
            "     - Divisez la réponse par des virgules. Traitez les appellations (par exemple, \"Meursault\") et les domaines (par exemple, \"Domaine de Terrebrune\") séparément, et retournez-les comme tableaux (ex. [\"Meursault\"] et [\"Domaine de Terrebrune\"]). \n" +
            "     - Si la réponse est vide ou n'a pas de sens, définissez `appellations` et `domaines` comme des tableaux vides.\n" +
-           "   - De la question 9/10, analysez la fourchette de budget (par exemple, \"50-100\") en `prix_min` et `prix_max`.\n" +
-           "   - Le filtre 'more_regions' corresponds à la question 9 (connaisseurs) 'Seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?' utilisez un booleen TRUE pour la réponse oui et FALSE pour non"+
-           "   - Par defaut, 'more_regions' est toujours TRUE, sauf si l'utilisateur connaisseur a décidé que non" +
+           "   - De la question budgétaire 9 ou 10, convertissez la fourchette de budget en prix_min et prix_max (par exemple, \"50-100\" en `prix_min: 50` et `prix_max: 100`).\n" +
+           "   - Le filtre 'more_regions' corresponds à la question 9 (connaisseurs) 'Seriez-vous intéressé de découvrir des régions viticoles encore inexplorées pour vous ?' utilisez un booleen TRUE pour la réponse oui et FALSE pour non\n"+
+           "     - Par defaut, 'more_regions' est toujours TRUE, sauf si l'utilisateur connaisseur a décidé que non\n" +
            "   - Omettez tout filtre non spécifié ou non pertinent.\n\n" +
            "2. **Poids des couleurs (color_weights)** :\n" +
            "   - De la question 4 (\"Classement\", par exemple, \"rouge,petillant,blanc,rose\"), attribuez des poids :\n" +
            "     - 1er : 4, 2ème : 3, 3ème : 2, 4ème : 1.\n" +
-           "   - Mappez \"petillant\" à la couleur \"Bulles\". Utilisez \"Rouge\", \"Blanc\", \"Bulles\", \"Rosé\" comme clés.\n\n" +
+           "     - Mappez \"petillant\" à la couleur \"bulles\"\n" +
+           "     - Utilisez \"rouge\", \"blanc\", \"bulles\", \"rose\" comme clés.\n" +
+           "     - Les 4 clés sont attendues pour color_weights.\n\n" +
            "3. **Préférences (preferences)** :\n" +
            "   - De la question 5 (\"Préférences de goût\"), extrayez les notes (1-5) pour chaque type de vin :\n" +
            "     - \"rouges\" : \"fruite\", \"épice\", \"boise\", \"tannique\".\n" +
            "     - \"blancs\" : \"fruite\", \"mineral\", \"beurre\", \"boise\", \"sucrosite\".\n" +
-           "   - Les notes indiquent l'intensité de la préférence (1 = aversion, 5 = forte préférence).\n\n" +
+           "   - Les notes indiquent l'intensité de la préférence (1 = aversion, 5 = forte préférence).\n" +
            "   - De la question 6 (\"Importance viticulture raisonnée/biologique\"), extrayez la note (1-5)\n" +
-           "      - \"conduite\" : \nnote.\n" +
+           "      - \"conduite\" : note.\n\n" +
            "4. **Sortie** :\n" +
-           "   - Générez un objet JSON 100% valide pour la fonction `query_wines` avec `filters`, `color_weights`, et `preferences`.\n\n" +
-           "   - Les clés 'regions', 'appellations', et 'domaines' doivent être des tableaux de chaînes.\n\n \n\n" +
+           "   - Générez un objet JSON 100% valide pour la fonction `get_wines` avec `filters`, `color_weights`, et `preferences`.\n" +
+           "   - Les clés 'regions', 'appellations', et 'domaines' doivent être des tableaux de chaînes.\n\n" +
            "**Exemple de sortie attendue :**\n" +
-        //    "<function=query_wines>" +
-        //    "{\n" +
            "  \"filters\": {\n" +
            "    \"regions\": [\"bourgogne\", \"provence\"],\n" +
-           "    \"more_regions\": TRUE,\n" +
+           "    \"more_regions\": true,\n" +
            "    \"appellations\": [\"Meursault\"],\n" +
            "    \"domaines\": [\"Domaine de Terrebrune\"],\n" +
            "    \"prix_min\": 50,\n" +
@@ -202,8 +190,6 @@ class LLMService {
            "    \"blancs\": {\"fruite\": 5, \"mineral\": 5, \"beurre\": 2, \"boise\": 1, \"sucrosite\": 1},\n" +
            "    \"conduite\": 5\n" +
            "  }\n" +
-        //    "}\n\n" +
-        //    "</function>" +
            "Les données du client sont les suivantes : " + JSON.stringify(formData, null, 2);
     }
 
@@ -251,15 +237,17 @@ class LLMService {
                 ).join(','));
             }
             
-            // Apply price filters
+            // Apply price filters above this first query
             if (filters.prix_min) {
-                prioritizedQuery = prioritizedQuery.gte('prix', filters.prix_min);
+                // expand the search to include cheaper wines within -10 of the minimum price set by user
+                const adjustedMinPrice = Math.max(0, filters.prix_min - 10); // Ensure we don't go below 0
+                prioritizedQuery = prioritizedQuery.gte('prix', adjustedMinPrice);
             }
             if (filters.prix_max) {
                 prioritizedQuery = prioritizedQuery.lte('prix', filters.prix_max);
             }
             
-            // Get prioritized wines (those matching specific filters)
+            // Get prioritized wines (those matching specific user filters)
             const { data: prioritizedWines, error: prioritizedError } = await prioritizedQuery;
             
             if (prioritizedError) {
@@ -274,9 +262,10 @@ class LLMService {
                 let fallbackQuery = supabase.from('wines').select('*');
                 
                 // Apply price filters for fallback
-                // Maybe we should remove price filters to explore other wines the prospect could like despite budget??
+                // Going -10 below the minimum price set by user to give more options to the user
                 if (filters.prix_min) {
-                    fallbackQuery = fallbackQuery.gte('prix', filters.prix_min);
+                    const adjustedMinPrice = Math.max(0, filters.prix_min - 10);
+                    fallbackQuery = fallbackQuery.gte('prix', adjustedMinPrice);
                 }
                 if (filters.prix_max) {
                     fallbackQuery = fallbackQuery.lte('prix', filters.prix_max);
@@ -303,19 +292,19 @@ class LLMService {
             
             
             // Calculer les scores pour chaque vin fonction des préférences et des poids des couleurs
-/* 
-Poids des couleurs : Le poids de la couleur (color_weights) est multiplié par 10 pour lui donner une importance significative dans le score total.
-Préférences gustatives :
-- Pour les vins rouges, on multiplie chaque caractéristique de la base de données (rouge_fruite, etc.) par la préférence correspondante (preferences.rouges.fruite, etc.).
-- Pour les vins blancs, on fait de même avec leurs caractéristiques (blanc_fruite, etc.).
-- Les valeurs nulles sont gérées avec || 0 pour éviter les erreurs.
-- Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne contient pas ces caractéristiques.
-Preference conduite:
-- Score augmenté de 0 à 20 selon type du vin x choix utilisateur. 
-- Forte (4-5): 20 biody, 10 biolo, 0 tradi.
-- Moyen (2-3): 20 bolio, 10 biody 10 tradi.
-- Faible (1-2): 20 tradi, 10 biolo, 0 biody. 
-*/
+            /* 
+            Poids des couleurs : Le poids de la couleur (color_weights) est multiplié par 10 pour lui donner une importance significative dans le score total.
+            Préférences gustatives :
+            - Pour les vins rouges, on multiplie chaque caractéristique de la base de données (rouge_fruite, etc.) par la préférence correspondante (preferences.rouges.fruite, etc.).
+            - Pour les vins blancs, on fait de même avec leurs caractéristiques (blanc_fruite, etc.).
+            - Les valeurs nulles sont gérées avec || 0 pour éviter les erreurs.
+            - Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne contient pas ces caractéristiques.
+            Preference conduite:
+            - Score augmenté de 0 à 20 selon type du vin x choix utilisateur. 
+            - Forte (4-5): 20 biody, 10 biolo, 0 tradi.
+            - Moyen (2-3): 20 bolio, 10 biody 10 tradi.
+            - Faible (1-2): 20 tradi, 10 biolo, 0 biody. 
+            */
             const scoredWines = allWines.map(wine => {
                 let score = 0;
 
@@ -368,9 +357,9 @@ Preference conduite:
             });
                 
             // Trier par score décroissant et prendre les 10 premiers
-/* Les vins sont triés par score décroissant avec .sort((a, b) => b.score - a.score).
-.slice(0, 10) limite le résultat aux 10 premiers vins.
-*/
+            /* Les vins sont triés par score décroissant avec .sort((a, b) => b.score - a.score).
+            .slice(0, 10) limite le résultat aux 10 premiers vins.
+            */
             const sortedWines = scoredWines
             .sort((a, b) => b.score - a.score)
             .slice(0, 10);
