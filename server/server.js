@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const llmService = require('./services/llm');
 const storageService = require('./services/storage');
+const emailService = require('./services/email');
 const app = express();
 const path = require('path');
 app.use(express.static(path.join(__dirname, '../public')));
@@ -55,6 +56,16 @@ app.post('/submit', async (req, res) => {
                 console.log('****************************'); 
                 console.log('Form data stored successfully:', data);
                 response.submissionId = data[0].id; // Add the submission ID to the response
+                
+                // Send email notification
+                try {
+                    console.log('****************************'); 
+                    console.log('Sending an email notification to WIM owners');
+                    await emailService.sendSubmissionNotification(req.body, llmResult.selection);
+                } catch (emailError) {
+                    console.error('Error sending email notification:', emailError);
+                    // Continue with the response even if email notification fails
+                }
             }
             
             res.json(response);

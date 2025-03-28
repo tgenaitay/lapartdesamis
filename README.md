@@ -33,6 +33,9 @@ Currently using Together AI's free endpoint for consuming Llama 3.3.
 TOGETHER_API_KEY=xx
 SUPABASE_URL=xx
 SUPABASE_KEY=xx
+RESEND_API_KEY=
+NOTIFICATION_EMAIL=
+SENDER_EMAIL=
 ```
 
 ## Development
