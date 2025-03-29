@@ -8,6 +8,7 @@ const app = express();
 const path = require('path');
 app.use(express.static(path.join(__dirname, '../public')));
 // Enable CORS for the client app
+// TODO: enable only our domain for origin, so that we don't expose our API to anyone else
 app.use(cors({
     origin: true, // Allow all origins
     methods: ['GET', 'POST'],
@@ -16,11 +17,6 @@ app.use(cors({
 }));
 // Parse JSON bodies
 app.use(express.json());
-
-// Endpoint to securely provide Mapbox token
-app.get('/api/mapbox-token', (req, res) => {
-    res.json({ token: process.env.MAPBOX_KEY });
-});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -34,7 +30,6 @@ app.post('/submit', async (req, res) => {
     console.log('Received form submission:');
     console.log(JSON.stringify(req.body, null, 2));
     console.log('****************************');
-
     
     try {
         const llmResult = await llmService.processFormSubmission(req.body);
@@ -57,15 +52,15 @@ app.post('/submit', async (req, res) => {
                 console.log('Form data stored successfully:', data);
                 response.submissionId = data[0].id; // Add the submission ID to the response
                 
-                // Send email notification
-                try {
-                    console.log('****************************'); 
-                    console.log('Sending an email notification to WIM owners');
-                    await emailService.sendSubmissionNotification(req.body, llmResult.selection);
-                } catch (emailError) {
-                    console.error('Error sending email notification:', emailError);
-                    // Continue with the response even if email notification fails
-                }
+                // Send email notification, paused while in development
+                // try {
+                //     console.log('****************************'); 
+                //     console.log('Sending an email notification to WIM owners');
+                //     await emailService.sendSubmissionNotification(req.body, llmResult.selection);
+                // } catch (emailError) {
+                //     console.error('Error sending email notification:', emailError);
+                //     // Continue with the response even if email notification fails
+                // }
             }
             
             res.json(response);
@@ -105,6 +100,34 @@ app.get('/selection/:submissionId', async (req, res) => {
         }
         
         res.json(data);
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Send wine selection to customer email
+app.post('/send-email', async (req, res) => {
+    console.log('****************************'); 
+    console.log('Sending wine selection to customer email:');
+    console.log(req.body);
+    console.log('****************************');
+    
+    try {
+        const { email, submissionId } = req.body;
+        
+        if (!email || !submissionId) {
+            return res.status(400).json({ error: 'Email and submissionId are required' });
+        }
+        
+        const { data, error } = await emailService.sendWineSelection(email, submissionId);
+        
+        if (error) {
+            console.error('Error sending wine selection email:', error);
+            return res.status(500).json({ error: 'Failed to send wine selection email' });
+        }
+        
+        res.json({ message: 'Wine selection email sent successfully' });
     } catch (error) {
         console.error('Error processing request:', error);
         res.status(500).json({ error: 'Internal Server Error' });

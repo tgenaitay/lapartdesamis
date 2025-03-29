@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Get email from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+    console.log(email);
+    if (email) {
+        document.getElementById('userEmail').value = email;
+    }
     // Conditional Logic for level questions
     const level = document.querySelectorAll('input[name="1.niveau"]');
     const toggleSections = (level) => {
@@ -92,6 +99,29 @@ document.addEventListener('DOMContentLoaded', () => {
         updateWineOrder();
     });
     wineRanking.after(resetButton);
+
+    // Add reset buttons for regions questions
+    document.querySelectorAll('.regions-reset-container').forEach(container => {
+        const resetButton = document.createElement('button');
+        resetButton.textContent = 'Réinitialiser cette liste';
+        resetButton.className = 'reset-ranking-btn';
+        
+        // Find the checkboxes in the same question section
+        const questionSection = container.closest('.question-section');
+        const checkboxes = questionSection.querySelectorAll('input[type="checkbox"]');
+        
+        resetButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Uncheck all checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+        
+        container.appendChild(resetButton);
+    });
     
     function updateWineOrder() {
         const items = Array.from(document.querySelectorAll('.ranking-item'));
@@ -323,6 +353,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 formattedData['6. Préférence viticulture raisonnée/biologique'] = ecoActiveBtn.dataset.value;
             }
             
+            // Add userEmail to formattedData if it has a value
+            const userEmailInput = document.getElementById('userEmail');
+            if (userEmailInput && userEmailInput.value) {
+                formattedData['Email'] = userEmailInput.value;
+            }
+            
             updateStatus('Analyse des résultats...');
             await new Promise(resolve => setTimeout(resolve, 2000));
             
@@ -354,11 +390,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const data = await response.json();
             
-            updateStatus('Une pré-selection est prête!');
+            updateStatus('Une pré-selection est prête!');            
             await new Promise(resolve => setTimeout(resolve, 2000));
             
-            // Redirect to results page with submissionId
-            window.location.href = `results.html?submissionId=${data.submissionId}`;
+            // Redirect to results page with submissionId and userEmail if available
+            const userEmailValue = document.getElementById('userEmail').value;
+            let redirectUrl = `results.html?submissionId=${data.submissionId}`;
+            if (userEmailValue) {
+                redirectUrl += `&email=${encodeURIComponent(userEmailValue)}`;
+            }
+            window.location.href = redirectUrl;
             
         } catch (error) {
             showError(error.message);

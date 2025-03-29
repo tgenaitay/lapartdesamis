@@ -1,6 +1,7 @@
-// Get submission ID from URL parameters
+// Get submission ID and email from URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const submissionId = urlParams.get('submissionId');
+const userEmail = urlParams.get('email');
 
 function createCharacteristicBar(value, maxValue = 5) {
     if (value === null) return '';
@@ -71,6 +72,124 @@ function displayWines(wines) {
     return wineGrid;
 }
 
+function createEmailForm() {
+    const formCard = document.createElement('div');
+    formCard.className = 'email-form-card';
+    formCard.innerHTML = `
+        <div class="email-form-content">
+            <div id="formContent">
+                <p class="cta-text">Nous vous enverrons immédiatement votre sélection personnalisée par email.</p>
+                <form id="emailForm" class="email-form">
+                    <input type="email" id="email" required placeholder="Votre email" />
+                    <button type="submit" class="submit-button">Recevoir ma sélection par email</button>
+                </form>
+            </div>
+            <div id="formFeedback" class="form-feedback"></div>
+        </div>
+    `;
+    return formCard;
+}
+
+function showEmailForm() {
+    const formCard = createEmailForm();
+    const ctaSection = document.querySelector('.cta-section');
+    ctaSection.insertAdjacentElement('afterend', formCard);
+    setTimeout(() => {
+        formCard.classList.add('visible');
+        formCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+    
+    // Hide all CTA buttons
+    document.querySelectorAll('.cta-button').forEach(button => {
+        button.style.display = 'none';
+    });
+    
+    const emailForm = formCard.querySelector('#emailForm');
+    emailForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = emailForm.querySelector('#email').value;
+        const feedback = formCard.querySelector('#formFeedback');
+        const content = formCard.querySelector('#formContent');
+        const submitButton = emailForm.querySelector('.submit-button');
+        
+        // Hide submit button
+        submitButton.style.display = 'none';
+        
+        // Create and show loading container
+        const loadingContainer = document.createElement('div');
+        loadingContainer.className = 'loading-container';
+        loadingContainer.innerHTML = `
+            <div class="loading-spinner"></div>
+            <div class="loading-status">Envoi de votre sélection en cours...</div>
+        `;
+        feedback.innerHTML = '';
+        feedback.appendChild(loadingContainer);
+        feedback.style.display = 'block';
+        
+        try {
+            console.log('trying to send an email to customer');
+            
+            // Update loading status
+            const loadingStatus = loadingContainer.querySelector('.loading-status');
+            loadingStatus.textContent = 'Votre sélection personnalisée est en chemin...';
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            const response = await fetch('/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, submissionId })
+            });
+            
+            if (!response.ok) throw new Error('Erreur lors de l\'envoi');
+            
+            // Update loading status before hiding it
+            loadingStatus.textContent = 'Email envoyé.';
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Hide loading container
+            loadingContainer.style.display = 'none';
+            
+            // Show success message
+            content.style.display = 'none';
+            feedback.innerHTML = 'Votre sélection vous attends. <br> \n Pour en discuter, nous vous proposons un rendez-vous téléphonique. <br> \n Nous allons maintenant ouvrir le calendrier dans une nouvelle fenêtre...';
+            feedback.className = 'form-feedback success';
+            
+            setTimeout(() => {
+                window.open('https://calendar.app.google/32uARJEajwA6bkH1A', '_blank');
+            }, 5000);
+            
+        } catch (error) {
+            // Hide loading container
+            loadingContainer.style.display = 'none';
+            
+            // Show error message
+            feedback.innerHTML = 'Une erreur est survenue. Veuillez réessayer.';
+            feedback.className = 'form-feedback error';
+            
+            // Show submit button again
+            submitButton.style.display = 'block';
+        }
+    });
+}
+
+function createCTASection(isEmailProvided) {
+    if (isEmailProvided) {
+        return `
+            <div class="cta-section">
+                <p class="cta-text">... et ce n'est que le début. Nous pouvons maintenant itérer ensemble sur cette courte sélection. <br> Utilisez notre calendrier pour réserver un appel à votre convenance !</p>
+                <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>
+            </div>
+        `;
+    } else {
+        return `
+            <div class="cta-section">
+                <p class="cta-text">... et ce n'est que le début. Nous pouvons maintenant itérer ensemble sur cette courte sélection.</p>
+                <button class="cta-button" onclick="showEmailForm()">Recevoir ma sélection par email</button>
+            </div>
+        `;
+    }
+}
+
 async function fetchAndDisplayWines() {
     if (!submissionId) {
         document.getElementById('content').innerHTML = `
@@ -86,15 +205,17 @@ async function fetchAndDisplayWines() {
         if (!response.ok) throw new Error('Failed to fetch wine selection');
         
         const wines = await response.json();
+        // const isEmailProvided = userEmail !== null;
+        // KEEP ISEMAILPROVIDED TO TRUE WHILE THE DOMAIN IS NOT READY
+        const isEmailProvided = true;
+        
         document.getElementById('content').innerHTML = `
             <div class="success">
                 <h2>Nous avons des vins absolument extraordinaires à vous partager...</h2>
-                <div class="cta-section">
-                    <p class="cta-text">... et ce n'est que le début. Nous pouvons maintenant itérer ensemble sur cette courte sélection. <br> Utilisez notre calendrier pour réserver un appel à votre convenance !</p>
-                    <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>
-                </div>
+                ${createCTASection(isEmailProvided)}
                 ${displayWines(wines).outerHTML}
-                <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>
+                ${isEmailProvided ? `<a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>` : 
+                `<button class="cta-button" onclick="showEmailForm()">Recevoir ma sélection par email</button>`}
             </div>
         `;
     } catch (error) {

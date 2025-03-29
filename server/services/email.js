@@ -101,6 +101,71 @@ class EmailService {
             return { error };
         }
     }
+
+    /**
+     * Sends the wine selection to a customer's email
+     * @param {string} email - The customer's email address
+     * @param {string} submissionId - The ID of the form submission
+     * @returns {Promise<Object>} - The result of the email sending operation
+     */
+    async sendWineSelection(email, submissionId) {
+        try {
+            // Get the wine selection from storage
+            const { data, error: storageError } = await require('./storage').getWineSelection(submissionId);
+            
+            if (storageError) {
+                console.error('Error fetching wine selection for email:', storageError);
+                return { error: storageError };
+            }
+            
+            if (!data || data.length === 0) {
+                console.error('No wine selection found for submission ID:', submissionId);
+                return { error: 'No wine selection found' };
+            }
+            
+            // Format the wine selection for email
+            const wineSelectionFormatted = data.map((wine, index) => {
+                return `${index + 1}. ${wine.domaine_chateau} - ${wine.appellation} (${wine.couleur}) - ${wine.prix}€`;
+            }).join('\n');
+            
+            // Create email content
+            const emailContent = `
+                <h1>Votre sélection personnalisée Wine is Mine 🍷</h1>
+                <p>Merci pour votre intérêt! Voici la sélection de vins que nous avons préparée spécialement pour vous.</p>
+                
+                <h2>Votre sélection (${data.length} vins):</h2>
+                <div style="white-space: pre-wrap;">${wineSelectionFormatted}</div>
+                
+                <p>Pour discuter de cette sélection ou pour obtenir plus d'informations, n'hésitez pas à prendre rendez-vous avec nous :</p>
+                <p><a href="https://calendar.app.google/32uARJEajwA6bkH1A" style="display: inline-block; background-color: #8B0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Prendre rendez-vous</a></p>
+                
+                <p>À bientôt !</p>
+                <p>L'équipe Wine is Mine</p>
+            `;
+            
+            // Send the email
+            const { data: emailData, error } = await this.resend.emails.send({
+                from: this.senderEmail,
+                to: email,
+                subject: 'Votre sélection personnalisée Wine is Mine',
+                html: emailContent,
+                headers: {
+                    'X-Entity-Ref-ID': uuid(),
+                },
+            });
+            
+            if (error) {
+                console.error('Error sending wine selection email:', error);
+                return { error };
+            }
+            
+            console.log('Wine selection email sent successfully to:', email);
+            return { data: emailData };
+        } catch (error) {
+            console.error('Error in email service:', error);
+            return { error };
+        }
+    }
 }
 
 module.exports = new EmailService();
