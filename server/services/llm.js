@@ -297,8 +297,8 @@ class LLMService {
             Préférences gustatives :
             - Pour les vins rouges, on multiplie chaque caractéristique de la base de données (rouge_fruite, etc.) par la préférence correspondante (preferences.rouges.fruite, etc.).
             - Pour les vins blancs, on fait de même avec leurs caractéristiques (blanc_fruite, etc.).
+            - Pour les vins rosés et les bulles, on utilise les caractéristiques des blancs (blanc_fruite, blanc_mineral, etc.).
             - Les valeurs nulles sont gérées avec || 0 pour éviter les erreurs.
-            - Pas de scoring gustatif pour "Bulles" ou "Rosé" car la base de données ne contient pas ces caractéristiques.
             Preference conduite:
             - Score augmenté de 0 à 20 selon type du vin x choix utilisateur. 
             - Forte (4-5): 20 biody, 10 biolo, 0 tradi.
@@ -327,8 +327,21 @@ class LLMService {
                     score += (wine.blanc_beurre || 0) * (whites.beurre || 0);
                     score += (wine.blanc_boise || 0) * (whites.boise || 0);
                     score += (wine.blanc_sucrosite || 0) * (whites.sucrosite || 0);
+                } else if (wine.couleur === 'Bulles' && preferences.blancs) {
+                    const whites = preferences.blancs;
+                    score += (wine.blanc_fruite || 0) * (whites.fruite || 0);
+                    score += (wine.blanc_mineral || 0) * (whites.mineral || 0);
+                    score += (wine.blanc_beurre || 0) * (whites.beurre || 0);
+                    score += (wine.blanc_boise || 0) * (whites.boise || 0);
+                    score += (wine.blanc_sucrosite || 0) * (whites.sucrosite || 0);
+                } else if (wine.couleur === 'Rosé' && preferences.blancs) {
+                    const whites = preferences.blancs;
+                    score += (wine.blanc_fruite || 0) * (whites.fruite || 0);
+                    score += (wine.blanc_mineral || 0) * (whites.mineral || 0);
+                    score += (wine.blanc_beurre || 0) * (whites.beurre || 0);
+                    score += (wine.blanc_boise || 0) * (whites.boise || 0);
+                    score += (wine.blanc_sucrosite || 0) * (whites.sucrosite || 0);
                 }
-                // Note: Pas de caractéristiques gustatives pour Bulles ou Rosé dans la DB
 
                 // 3. Ajouter l'influence de note_wim
                 score += wine.note_wim * 5; // Multiplier par 5
