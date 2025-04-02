@@ -1,22 +1,26 @@
 # La Part des Amis 🇫🇷🍷
 
 A web application to query tastes from wine enthusiasts, and fetch a selection of great wines from our catalog.
-Currently using Together AI's free endpoint for consuming Llama 3.3.
+Speeds up discovery of fantastic wines to make a cellar, then converts leads to hot prospects thanks to followup meeting.
 
 ## Features
 
 - Server-side processing with Node.js
 - Static file serving for frontend assets
-- LLM integration for intelligent transformation of user input into filters
-- Function call to Supabase for querying best wines
-- Scoring based on user's preferences and WIM notes
+- LLM integration for intelligent transformation of user input into filters.
+- Currently using Together AI's free endpoint for consuming Llama 3.3.
+- Function call to Supabase for querying best wines based on filters
+- Scoring based on user's preferences and our own notes
 - Data storage all in Supabase
+- Emailing client/owners using Resend
 
 ## Prerequisites
 
 - Node.js
 - npm
 - Supabase
+- Resend
+- Together AI
 - Wine data :) 
 
 ## Setup
@@ -30,9 +34,9 @@ Currently using Together AI's free endpoint for consuming Llama 3.3.
 3. Create a `.env` file in the root directory with required environment variables
 
 ```
-TOGETHER_API_KEY=xx
 SUPABASE_URL=xx
 SUPABASE_KEY=xx
+TOGETHER_API_KEY=xx
 RESEND_API_KEY=
 NOTIFICATION_EMAIL=
 SENDER_EMAIL=
@@ -111,6 +115,7 @@ All feedback welcome.
 
 - Llama 3.3 is hosted on a free mutualized endpoint. We have timeouts from time to time.
 - The UI is not yet customized to the LPDA brand.
+- Calendar link not finalized.
 
 ## Wine Selection Logic 🍇
 
@@ -145,3 +150,10 @@ Our selection process works in 3 clear phases:
    - Final selection cuts to only the 10 highest-scoring wines from our short list
 
 This ensures recommendations balance personal preferences with best in class wines.
+
+## Emailing Logic
+
+- Param ?=email can be inserted in the app URL.
+- Alternatively, an email can also be provided by user in the results page. 
+
+ Either way, email is stored in Supabase to identify prospect and used to send the wine selection when completed.
