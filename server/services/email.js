@@ -68,7 +68,7 @@ class EmailService {
             
             // Create email content
             const emailContent = `
-                <h1>Un nouveau formulaire Wine is Mine a été rempli 🎉 </h1>
+                <h1>Un nouveau formulaire La Part des Amis a été rempli 🎉 </h1>
                 <p>Voici ce que nous avons obtenu</p>
                 
                 <h2>Sélection (${wineSelection.length} vins):</h2>
@@ -82,7 +82,7 @@ class EmailService {
             const { data, error } = await this.resend.emails.send({
                 from: this.senderEmail,
                 to: this.recipientEmail,
-                subject: 'Nouvelle entrée dans le formulaire Wine is Mine',
+                subject: 'Nouvelle entrée dans le formulaire La Part des Amis',
                 html: emailContent,
                 headers: {
                     'X-Entity-Ref-ID': uuid(),
@@ -130,7 +130,7 @@ class EmailService {
             
             // Create email content
             const emailContent = `
-                <h1>Votre sélection personnalisée Wine is Mine 🍷</h1>
+                <h1>Votre sélection personnalisée La Part des Amis 🍷</h1>
                 <p>Merci pour votre intérêt! Voici la sélection de vins que nous avons préparée spécialement pour vous.</p>
                 
                 <h2>Votre sélection (${data.length} vins):</h2>
@@ -140,14 +140,14 @@ class EmailService {
                 <p><a href="https://calendar.app.google/32uARJEajwA6bkH1A" style="display: inline-block; background-color: #8B0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Prendre rendez-vous</a></p>
                 
                 <p>À bientôt !</p>
-                <p>L'équipe Wine is Mine</p>
+                <p>L'équipe La Part des Amis</p>
             `;
             
             // Send the email
             const { data: emailData, error } = await this.resend.emails.send({
                 from: this.senderEmail,
                 to: email,
-                subject: 'Votre sélection personnalisée Wine is Mine',
+                subject: 'Votre sélection personnalisée La Part des Amis',
                 html: emailContent,
                 headers: {
                     'X-Entity-Ref-ID': uuid(),

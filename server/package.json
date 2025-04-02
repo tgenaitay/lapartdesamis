@@ -1,7 +1,7 @@
 {
-  "name": "wine-is-mine",
+  "name": "la-part-des-amis",
   "version": "1.0.0",
-  "description": "Wine is Mine will help you find extraordinary wines for your cellar",
+  "description": "La Part des Amis will help you find extraordinary wines for your cellar",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

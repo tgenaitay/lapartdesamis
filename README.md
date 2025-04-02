@@ -1,4 +1,4 @@
-# Wine is Mine 🇫🇷🍷
+# La Part des Amis 🇫🇷🍷
 
 A web application to query tastes from wine enthusiasts, and fetch a selection of great wines from our catalog.
 Currently using Together AI's free endpoint for consuming Llama 3.3.
@@ -58,6 +58,47 @@ To deploy:
 1. Install Vercel CLI
 2. Install environment variables in Vercel settings
 3. Run `vercel --prod` in the project root
+
+## Database
+
+```sql
+create table public.wines (
+  id serial not null,
+  region text not null,
+  appellation text not null,
+  domaine_chateau text not null,
+  couleur text not null,
+  cepage_dominant text not null,
+  conduite text not null,
+  rouge_fruite integer null,
+  rouge_epice integer null,
+  rouge_boise integer null,
+  rouge_tannique integer null,
+  blanc_fruite integer null,
+  blanc_mineral integer null,
+  blanc_beurre integer null,
+  blanc_boise integer null,
+  blanc_sucrosite integer null,
+  debut_apogee integer not null,
+  fin_apogee integer not null,
+  note_wim integer not null,
+  prix double precision not null,
+  gamme_prix text not null,
+  constraint wines_pkey primary key (id)
+) TABLESPACE pg_default;
+
+create table public.forms (
+  id uuid not null default extensions.uuid_generate_v4 (),
+  form_data jsonb not null,
+  llm_selection jsonb not null,
+  submitted_at timestamp with time zone not null default now(),
+  constraint forms_pkey primary key (id)
+) TABLESPACE pg_default;
+
+create index IF not exists forms_submitted_at_idx on public.forms using btree (submitted_at desc) TABLESPACE pg_default;
+
+```
+
 
 ## Demo
 
