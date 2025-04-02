@@ -92,6 +92,7 @@ create table public.forms (
   form_data jsonb not null,
   llm_selection jsonb not null,
   submitted_at timestamp with time zone not null default now(),
+  client text null,
   constraint forms_pkey primary key (id)
 ) TABLESPACE pg_default;
 
@@ -102,13 +103,14 @@ create index IF not exists forms_submitted_at_idx on public.forms using btree (s
 
 ## Demo
 
-https://wine-is-mine.vercel.app/
+https://bonjour.lapartdesamis.fr
 
 All feedback welcome.
 
 ## Known issues
 
-- Llama 3.3 randomly outputs a malformed native function call in its content instead of a regular tool call. Happens 1 out of 5 times.
+- Llama 3.3 is hosted on a free mutualized endpoint. We have timeouts from time to time.
+- The UI is not yet customized to the LPDA brand.
 
 ## Wine Selection Logic 🍇
 
