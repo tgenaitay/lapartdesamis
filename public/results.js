@@ -151,12 +151,8 @@ function showEmailForm() {
             
             // Show success message
             content.style.display = 'none';
-            feedback.innerHTML = 'Votre sélection vous attends. <br> \n Pour en discuter, nous vous proposons un rendez-vous téléphonique. <br> \n Nous allons maintenant ouvrir le calendrier dans une nouvelle fenêtre...';
+            feedback.innerHTML = '<h2>Votre sélection de vins est dans votre boîte email.</h2> <br> \n Pour en discuter, nous vous proposons un rendez-vous téléphonique. <br> <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a> \n ';
             feedback.className = 'form-feedback success';
-            
-            setTimeout(() => {
-                window.open('https://calendar.app.google/32uARJEajwA6bkH1A', '_blank');
-            }, 5000);
             
         } catch (error) {
             // Hide loading container

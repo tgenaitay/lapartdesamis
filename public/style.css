@@ -294,7 +294,7 @@ Description: Styles for the La Part des Amis questionnaire and results pages.
    .loading-status {
        color: var(--accent);
        font-family: "Cormorant Garamond", serif;
-       font-size: 1.2em;
+       font-size: 1.5em;
    }
    
    .loading-error {
