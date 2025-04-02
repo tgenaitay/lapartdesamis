@@ -79,8 +79,8 @@ app.post('/submit', async (req, res) => {
             res.json(response);
         } else {
             res.status(504).json({ 
-                error: 'Gateway Timeout', 
-                message: 'The server is currently busy processing requests. Please try again in a few minutes.' 
+                error: 'Timeout', 
+                message: 'Le serveur est actuellement occupé à traiter des requêtes. Veuillez réessayer dans quelques minutes.'
             });
         }
     } catch (error) {
