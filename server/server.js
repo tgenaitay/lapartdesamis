@@ -52,7 +52,7 @@ app.post('/submit', async (req, res) => {
                 console.log('Form data stored successfully:', data);
                 response.submissionId = data[0].id; // Add the submission ID to the response
                 
-                // Send email notification
+                // Send email notification to owners
                 try {
                     console.log('****************************'); 
                     console.log('Sending an email notification to LPDA owners');
@@ -60,6 +60,19 @@ app.post('/submit', async (req, res) => {
                 } catch (emailError) {
                     console.error('Error sending email notification:', emailError);
                     // Continue with the response even if email notification fails
+                }
+
+                // send results to client if identified with Email
+                if (req.body.Email) {
+                    try {
+                    console.log('****************************');
+                    console.log('Sending results to client email directly');
+                    await emailService.sendWineSelection(req.body.Email, data[0].id);
+                    }
+                    catch (emailError) {
+                        console.error('Error sending results to client email:', emailError);
+                        // Continue with the response even if email notification fails
+                    }
                 }
             }
             
