@@ -478,7 +478,5 @@ Description: Styles for the La Part des Amis questionnaire and results pages.
    }
 
    .form-feedback {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.2em;
     color: var(--text);
    }

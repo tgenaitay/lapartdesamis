@@ -32,6 +32,28 @@ async function storeFormSubmission(formData, llmSelection) {
 }
 
 /**
+ * Updates a form submission with the client's email
+ * @param {string} submissionId - The ID of the form submission
+ * @param {string} clientEmail - The email of the client
+ * @returns {Promise<Object>} - The result of the database operation
+ */
+
+async function updateSubmissionWithClientEmail(submissionId, clientEmail) {
+    try {
+        const { data, error } = await supabase
+           .from('forms')
+           .update({ client: clientEmail })
+           .eq('id', submissionId)
+           .select();
+        if (error) throw error;
+        return { data };
+    } catch (error) {
+        console.error('Error updating submission with client email:', error);
+        return { error };
+    }
+}
+
+/**
  * Fetches wine selection data by submission ID
  * @param {string} submissionId - The ID of the form submission
  * @returns {Promise<Object>} - The wine selection data
@@ -54,5 +76,6 @@ async function getWineSelection(submissionId) {
 
 module.exports = {
     storeFormSubmission,
-    getWineSelection
+    getWineSelection,
+    updateSubmissionWithClientEmail
 };
