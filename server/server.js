@@ -141,7 +141,6 @@ app.post('/send-email', async (req, res) => {
         }
 
         console.log('****************************');
-        console.log('Updating submission with client email');
         const { data: updateData, error: updateError } = await storageService.updateSubmissionWithClientEmail(submissionId, email);
 
         if (updateError) {
@@ -149,7 +148,6 @@ app.post('/send-email', async (req, res) => {
             return res.status(500).json({ error: 'Failed to update submission with client email' });
         }
         console.log('****************************');
-        console.log('Submission updated with client email:', updateData);
         
         res.json({ message: 'Wine selection email sent successfully' });
     } catch (error) {
