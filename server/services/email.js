@@ -125,18 +125,18 @@ class EmailService {
             
             // Format the wine selection for email
             const wineSelectionFormatted = data.map((wine, index) => {
-                return `${index + 1}. ${wine.domaine_chateau} - ${wine.appellation} (${wine.couleur}) - ${wine.prix}€`;
+                return `${index + 1}. <strong>${wine.domaine_chateau}</strong> - ${wine.appellation} (${wine.couleur}) - ${wine.prix}€`;
             }).join('\n');
             
             // Create email content
             const emailContent = `
                 <h1>Votre sélection personnalisée La Part des Amis 🍷</h1>
-                <p>Merci pour votre intérêt. Voici la sélection de vins que nous avons préparée spécialement pour vous !</p>
+                <p>Merci pour votre intérêt. Voici la sélection de vins préparée spécialement pour vous !</p>
                 
                 <h2>Votre sélection (${data.length} vins):</h2>
                 <div style="white-space: pre-wrap;">${wineSelectionFormatted}</div>
                 
-                <p>Pour discuter de cette sélection et découvrir davantages de vins, parlons-nous :</p>
+                <h3>Pour discuter de cette sélection et découvrir davantages de vins, parlons-nous :</h3>
                 <p><a href="https://calendar.app.google/32uARJEajwA6bkH1A" style="display: inline-block; background-color: #8B0000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Prendre rendez-vous</a></p>
                 
                 <p>À bientôt !</p>

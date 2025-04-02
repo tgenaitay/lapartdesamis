@@ -40,6 +40,8 @@ async function storeFormSubmission(formData, llmSelection) {
 
 async function updateSubmissionWithClientEmail(submissionId, clientEmail) {
     try {
+        console.log(submissionId);
+        console.log(clientEmail);
         const { data, error } = await supabase
            .from('forms')
            .update({ client: clientEmail })
