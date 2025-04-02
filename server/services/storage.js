@@ -18,7 +18,7 @@ async function storeFormSubmission(formData, llmSelection) {
             form_data: formData,
             llm_selection: llmSelection,
             submitted_at: new Date().toISOString(),
-            client: formData.Email
+            client: formData.Email || null
         };
         
         return await supabase
