@@ -132,7 +132,7 @@ Our selection process works in 3 clear phases:
       *(e.g. 40 points for red, 30 points for white...)*
    - **2. Taste match**: Multiplying user's choice with wine data.  
      *(e.g. "Red fruity wines at 5" get boosted +25 points if user responded liking fruity flavors 5/5)*
-   - **3. Quality score**: Wine is Mine internal rating (note_wim) multipled by a factor of 5.
+   - **3. Quality score**: Internal rating (note_wim) multipled by a factor of 5.
       *(e.g. A wine with a WIM note of 10 will get +50 points)*
    - **4. Methodology match**: Matches wine production method to user preferences
      *(e.g. "Biodynamic" wines get additional +20 points for high preference 4/5)*,
