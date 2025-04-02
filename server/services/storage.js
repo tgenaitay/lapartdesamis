@@ -40,15 +40,37 @@ async function storeFormSubmission(formData, llmSelection) {
 
 async function updateSubmissionWithClientEmail(submissionId, clientEmail) {
     try {
-        console.log(submissionId);
-        console.log(clientEmail);
+        console.log('Updating submission with client email:', submissionId, clientEmail);
+        // First, verify if the record exists
+        const { data: existingRecord, error: checkError } = await supabase
+            .from('forms')
+            .select('id')
+            .eq('id', submissionId)
+            .single();
+
+        if (checkError) {
+            console.error('Error checking record:', checkError);
+            return { error: checkError };
+        }
+
+        if (!existingRecord) {
+            return { error: `No record found with ID: ${submissionId}` };
+        }
+
+        // Proceed with update
         const { data, error } = await supabase
-           .from('forms')
-           .update({ client: clientEmail })
-           .eq('id', submissionId)
-           .select();
+            .from('forms')
+            .update({ client: clientEmail })
+            .eq('id', submissionId)
+            .select();
+
         if (error) throw error;
-        return { data };
+        
+        if (!data || data.length === 0) {
+            return { error: 'Update succeeded but no data returned' };
+        }
+
+        return { data: data[0] };
     } catch (error) {
         console.error('Error updating submission with client email:', error);
         return { error };
