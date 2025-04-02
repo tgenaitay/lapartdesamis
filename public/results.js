@@ -194,7 +194,7 @@ async function fetchAndDisplayWines() {
     if (!submissionId) {
         document.getElementById('content').innerHTML = `
             <div class="error">
-                Aucun identifiant de soumission trouvé. Veuillez retourner au formulaire.
+                Aucun identifiant de sélection trouvé. Veuillez retourner au formulaire.
             </div>
         `;
         return;
@@ -205,9 +205,7 @@ async function fetchAndDisplayWines() {
         if (!response.ok) throw new Error('Failed to fetch wine selection');
         
         const wines = await response.json();
-        // const isEmailProvided = userEmail !== null;
-        // KEEP ISEMAILPROVIDED TO TRUE WHILE THE DOMAIN IS NOT READY
-        const isEmailProvided = true;
+        const isEmailProvided = userEmail !== null;
         
         document.getElementById('content').innerHTML = `
             <div class="success">

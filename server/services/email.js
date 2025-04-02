@@ -4,7 +4,7 @@ const { v4: uuid } = require('uuid');
 class EmailService {
     constructor() {
         this.resend = new Resend(process.env.RESEND_API_KEY);
-        this.recipientEmail = process.env.NOTIFICATION_EMAIL;
+        this.recipientEmails = process.env.NOTIFICATION_EMAIL.split(',').map(email => email.trim());
         this.senderEmail = process.env.SENDER_EMAIL;
     }
 
@@ -81,7 +81,7 @@ class EmailService {
             // Send the email
             const { data, error } = await this.resend.emails.send({
                 from: this.senderEmail,
-                to: this.recipientEmail,
+                to: this.recipientEmails,
                 subject: 'Nouvelle entrée dans le formulaire La Part des Amis',
                 html: emailContent,
                 headers: {

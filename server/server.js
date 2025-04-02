@@ -10,7 +10,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Enable CORS for the client app
 // TODO: enable only our domain for origin, so that we don't expose our API to anyone else
 app.use(cors({
-    origin: true, // Allow all origins
+    origin: 'https://bonjour.lapartdesamis.fr',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true
@@ -52,15 +52,15 @@ app.post('/submit', async (req, res) => {
                 console.log('Form data stored successfully:', data);
                 response.submissionId = data[0].id; // Add the submission ID to the response
                 
-                // Send email notification, paused while in development
-                // try {
-                //     console.log('****************************'); 
-                //     console.log('Sending an email notification to WIM owners');
-                //     await emailService.sendSubmissionNotification(req.body, llmResult.selection);
-                // } catch (emailError) {
-                //     console.error('Error sending email notification:', emailError);
-                //     // Continue with the response even if email notification fails
-                // }
+                // Send email notification
+                try {
+                    console.log('****************************'); 
+                    console.log('Sending an email notification to LPDA owners');
+                    await emailService.sendSubmissionNotification(req.body, llmResult.selection);
+                } catch (emailError) {
+                    console.error('Error sending email notification:', emailError);
+                    // Continue with the response even if email notification fails
+                }
             }
             
             res.json(response);
