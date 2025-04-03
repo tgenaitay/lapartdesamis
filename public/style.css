@@ -13,7 +13,7 @@ Description: Styles for the La Part des Amis questionnaire and results pages.
        --bg: #f9fdfa;
        --text: #e0994b;
        --accent: #CC8B44;
-       --alter: #968573;
+       --alter: #52483e;
        --secondary: #faf4e3;
        --tertiary: #FBFAF4;
        --hover: #654321;
@@ -170,6 +170,7 @@ Description: Styles for the La Part des Amis questionnaire and results pages.
        font-size: 1.1em;
        cursor: pointer;
        transition: transform 0.3s ease;
+       font-family: var(--font-main);
    }
    
    button[type="submit"]:hover {
