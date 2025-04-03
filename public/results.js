@@ -16,7 +16,7 @@ function createCharacteristicBar(value, maxValue = 5) {
 function displayWines(wines) {
     const wineGrid = document.createElement('div');
     wineGrid.className = 'wine-grid';
-    
+    let count = 1;
     wines.forEach(wine => {
         const wineCard = document.createElement('div');
         wineCard.className = 'wine-card';
@@ -36,7 +36,7 @@ function displayWines(wines) {
         }
         
         wineCard.innerHTML = `
-            <h3>${wine.domaine_chateau}</h3>
+            <h3>${count}. ${wine.domaine_chateau}</h3>
             <div class="wine-info">
                 <span class="wine-label">Appellation:</span>
                 <span class="wine-value">${wine.appellation}</span>
@@ -67,6 +67,7 @@ function displayWines(wines) {
         `;
         
         wineGrid.appendChild(wineCard);
+        count++;
     });
     
     return wineGrid;
@@ -78,10 +79,10 @@ function createEmailForm() {
     formCard.innerHTML = `
         <div class="email-form-content">
             <div id="formContent">
-                <p class="cta-text">Nous vous enverrons immédiatement votre sélection personnalisée par email.</p>
+                <p class="cta-text">Indiquez votre email ci-dessous.</p>
                 <form id="emailForm" class="email-form">
-                    <input type="email" id="email" required placeholder="Votre email" />
-                    <button type="submit" class="submit-button">Recevoir ma sélection par email</button>
+                    <input type="email" id="email" required placeholder="email@" />
+                    <button type="submit" class="submit-button">Envoyer la sélection sur mon email</button>
                 </form>
             </div>
             <div id="formFeedback" class="form-feedback"></div>
@@ -110,6 +111,8 @@ function showEmailForm() {
         const email = emailForm.querySelector('#email').value;
         const feedback = formCard.querySelector('#formFeedback');
         const content = formCard.querySelector('#formContent');
+        const ctaIntro = document.querySelector('.cta-intro');
+        const ctaSection = document.querySelector('.cta-section');
         const submitButton = emailForm.querySelector('.submit-button');
         
         // Hide submit button
@@ -151,7 +154,9 @@ function showEmailForm() {
             
             // Show success message
             content.style.display = 'none';
-            feedback.innerHTML = '<h2>Votre sélection de vins est dans votre boîte email.</h2> \n Pour en discuter, nous vous proposons un rendez-vous téléphonique. <br><br> <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a> \n ';
+            ctaIntro.style.display = 'none';
+            ctaSection.style.display = 'none';
+            feedback.innerHTML = '<h2>Votre sélection de vins est dans votre boîte email.</h2> \n <p class="cta-text"> Pour en discuter, nous vous proposons un rendez-vous téléphonique. </p> <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a> \n ';
             feedback.className = 'form-feedback success';
             
         } catch (error) {
@@ -180,7 +185,7 @@ function createCTASection(isEmailProvided) {
         return `
             <div class="cta-section">
                 <p class="cta-text">... et ce n'est que le début. Nous pouvons maintenant itérer ensemble sur cette courte sélection.</p>
-                <button class="cta-button" onclick="showEmailForm()">Recevoir ma sélection par email</button>
+                <button class="cta-button" onclick="showEmailForm()">Cliquez ici pour recevoir cette sélection par email</button>
             </div>
         `;
     }
@@ -205,7 +210,7 @@ async function fetchAndDisplayWines() {
         
         document.getElementById('content').innerHTML = `
             <div class="success">
-                <h2>Nous avons des vins absolument extraordinaires à vous partager...</h2>
+                <h2 class="cta-intro">Nous avons des vins absolument extraordinaires à vous partager...</h2>
                 ${createCTASection(isEmailProvided)}
                 ${displayWines(wines).outerHTML}
                 ${isEmailProvided ? `<a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>` : 

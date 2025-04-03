@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         updateWineOrder();
     });
-    wineRanking.after(resetButton);
+    wineRanking.before(resetButton);
 
     // Add reset buttons for regions questions
     document.querySelectorAll('.regions-reset-container').forEach(container => {

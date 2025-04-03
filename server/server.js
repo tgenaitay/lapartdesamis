@@ -8,9 +8,8 @@ const app = express();
 const path = require('path');
 app.use(express.static(path.join(__dirname, '../public')));
 // Enable CORS for the client app
-// TODO: enable only our domain for origin, so that we don't expose our API to anyone else
 app.use(cors({
-    origin: 'https://bonjour.lapartdesamis.fr',
+    origin: ['https://bonjour.lapartdesamis.fr', 'http://localhost:3000'],
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true
