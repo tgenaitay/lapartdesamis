@@ -156,7 +156,7 @@ function showEmailForm() {
             content.style.display = 'none';
             ctaIntro.style.display = 'none';
             ctaSection.style.display = 'none';
-            feedback.innerHTML = '<h2>Votre sélection de vins est dans votre boîte email.</h2> \n <p class="cta-text"> Pour en discuter, nous vous proposons un rendez-vous téléphonique. </p> <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a> \n ';
+            feedback.innerHTML = '<h2>Votre sélection de vins est dans votre boîte email.</h2> \n <p class="cta-text"> Pour en discuter, nous vous proposons un rendez-vous téléphonique. </p> <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3fjhdeRHHq-pXxplqSlWc5MI2uP9pCRql4228rK-aUUkEeZqkbU1-9gUg91EkkITyPwIXqkRmb" class="cta-button">Gratuit: Prenez rendez-vous</a> \n ';
             feedback.className = 'form-feedback success';
             
         } catch (error) {
@@ -178,7 +178,7 @@ function createCTASection(isEmailProvided) {
         return `
             <div class="cta-section">
                 <p class="cta-text">... et ce n'est que le début. Nous pouvons maintenant itérer ensemble sur cette courte sélection. <br> Utilisez notre calendrier pour réserver un appel à votre convenance !</p>
-                <a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>
+                <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3fjhdeRHHq-pXxplqSlWc5MI2uP9pCRql4228rK-aUUkEeZqkbU1-9gUg91EkkITyPwIXqkRmb" class="cta-button">Gratuit: Prenez rendez-vous</a>
             </div>
         `;
     } else {
@@ -213,7 +213,7 @@ async function fetchAndDisplayWines() {
                 <h2 class="cta-intro">Nous avons des vins absolument extraordinaires à vous partager...</h2>
                 ${createCTASection(isEmailProvided)}
                 ${displayWines(wines).outerHTML}
-                ${isEmailProvided ? `<a href="https://calendar.app.google/32uARJEajwA6bkH1A" class="cta-button">Gratuit: Prenez rendez-vous</a>` : 
+                ${isEmailProvided ? `<a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3fjhdeRHHq-pXxplqSlWc5MI2uP9pCRql4228rK-aUUkEeZqkbU1-9gUg91EkkITyPwIXqkRmb" class="cta-button">Gratuit: Prenez rendez-vous</a>` : 
                 `<button class="cta-button" onclick="showEmailForm()">Recevoir ma sélection par email</button>`}
             </div>
         `;

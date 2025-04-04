@@ -137,7 +137,7 @@ class EmailService {
                 <div style="white-space: pre-wrap;">${wineSelectionFormatted}</div>
                 
                 <h3>Pour discuter de cette sélection et découvrir davantages de vins, parlons-nous :</h3>
-                <p><a href="https://calendar.app.google/32uARJEajwA6bkH1A" style="display: inline-block; background-color: #cc8b44; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Prendre rendez-vous</a></p>
+                <p><a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3fjhdeRHHq-pXxplqSlWc5MI2uP9pCRql4228rK-aUUkEeZqkbU1-9gUg91EkkITyPwIXqkRmb" style="display: inline-block; background-color: #cc8b44; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Prendre rendez-vous</a></p>
                 
                 <p>À bientôt !</p>
                 <p>L'équipe La Part des Amis</p>
