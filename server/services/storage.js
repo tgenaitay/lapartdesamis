@@ -18,7 +18,7 @@ async function storeFormSubmission(formData, llmSelection) {
             form_data: formData,
             llm_selection: llmSelection,
             submitted_at: new Date().toISOString(),
-            client: formData.Email || null
+            client: `${formData['X. Contact Nom']} <${formData['X. Contact Email']}>` || null
         };
         
         return await supabase
@@ -30,53 +30,6 @@ async function storeFormSubmission(formData, llmSelection) {
         return { error };
     }
 }
-
-/**
- * Updates a form submission with the client's email
- * @param {string} submissionId - The ID of the form submission
- * @param {string} clientEmail - The email of the client
- * @returns {Promise<Object>} - The result of the database operation
- */
-
-async function updateSubmissionWithClientEmail(submissionId, clientEmail) {
-    try {
-        console.log('Updating submission with client email:', submissionId, clientEmail);
-        // First, verify if the record exists
-        const { data: existingRecord, error: checkError } = await supabase
-            .from('forms')
-            .select('id')
-            .eq('id', submissionId)
-            .single();
-
-        if (checkError) {
-            console.error('Error checking record:', checkError);
-            return { error: checkError };
-        }
-
-        if (!existingRecord) {
-            return { error: `No record found with ID: ${submissionId}` };
-        }
-
-        // Proceed with update
-        const { data, error } = await supabase
-            .from('forms')
-            .update({ client: clientEmail })
-            .eq('id', submissionId)
-            .select();
-
-        if (error) throw error;
-        
-        if (!data || data.length === 0) {
-            return { error: 'Update succeeded but no data returned' };
-        }
-
-        return { data: data[0] };
-    } catch (error) {
-        console.error('Error updating submission with client email:', error);
-        return { error };
-    }
-}
-
 /**
  * Fetches wine selection data by submission ID
  * @param {string} submissionId - The ID of the form submission
@@ -100,6 +53,5 @@ async function getWineSelection(submissionId) {
 
 module.exports = {
     storeFormSubmission,
-    getWineSelection,
-    updateSubmissionWithClientEmail
+    getWineSelection
 };

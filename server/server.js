@@ -62,11 +62,11 @@ app.post('/submit', async (req, res) => {
                 }
 
                 // send results to client if identified with Email
-                if (req.body.Email) {
+                if (req.body['X. Contact Email']) {
                     try {
                     console.log('****************************');
                     console.log('Sending results to client email directly');
-                    await emailService.sendWineSelection(req.body.Email, data[0].id);
+                    await emailService.sendWineSelection(req.body['X. Contact Email'], data[0].id);
                     }
                     catch (emailError) {
                         console.error('Error sending results to client email:', emailError);
@@ -118,44 +118,7 @@ app.get('/selection/:submissionId', async (req, res) => {
     }
 });
 
-// Send wine selection to customer email
-app.post('/send-email', async (req, res) => {
-    console.log('****************************'); 
-    console.log('Sending wine selection to customer email:');
-    console.log(req.body);
-    console.log('****************************');
-    
-    try {
-        const { email, submissionId } = req.body;
-        
-        if (!email || !submissionId) {
-            return res.status(400).json({ error: 'Email and submissionId are required' });
-        }
-        
-        const { data, error } = await emailService.sendWineSelection(email, submissionId);
-        
-        if (error) {
-            console.error('Error sending wine selection email:', error);
-            return res.status(500).json({ error: 'Failed to send wine selection email' });
-        }
 
-        console.log('****************************');
-        const { data: updateData, error: updateError } = await storageService.updateSubmissionWithClientEmail(submissionId, email);
-
-        if (updateError) {
-            console.error('Error updating submission with client email:', updateError);
-            return res.status(500).json({ error: 'Failed to update submission with client email' });
-        }
-        console.log('****************************');
-        
-        res.json({ message: 'Wine selection email sent successfully' });
-    } catch (error) {
-        console.error('Error processing request:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-// Fallback to index.html for SPA-like behavior
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
