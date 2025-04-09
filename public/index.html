@@ -14,7 +14,6 @@
         </div>
         
         <form id="wineForm">
-            <input type="hidden" id="userEmail" name="userEmail">
             <!-- Question 1 -->
             <div class="question-group">
                 <h2 class="required">1. Comment pourriez-vous qualifier vos connaissances en vin ?</h2>
@@ -555,10 +554,31 @@
                     </div>
                 </div>
             </div>
+            <hr>
+            <div class="client-contact">
+                <div class="question-group">
+                    <div class="question-section">
+                        <h2 class="required">Nous allons bientôt vous envoyer des recommandations de vins extraordinaires. Quel est votre nom et votre adresse email ?</h2>
+                        <span>Votre nom :</span><br>
+                        <input type="text" name="x.contact.nom" placeholder="" id="userName" required>
+                        <p> </p>
+                        <span>Une adresse mail :</span><br>
+                        <input type="email" name="x.contact.email" placeholder="" id="userEmail" required>
+                        <label>
+                            <input type="checkbox" name="x.contact.consentement" value="oui" id="consentement" required>
+                            <span class="custom-radio"></span>
+                            J’accepte que mes données soient utilisées pour m’envoyer des recommandations de vins, et pour un entretien de suivi.
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class="outro">
                 <button type="submit">Envoyer mes réponses</button>
             </div>
         </form>
+    </div>
+    <div class="mentions">
+    <p><small>Les informations recueillies dans ce formulaire sont enregistrées par La Part Des Amis afin de vous transmettre le résultat complet du questionnaire et vous recontacter pour un entretien visant à mieux comprendre vos besoins et affiner notre analyse. Elles sont destinées uniquement à La Part Des Amis. Conformément au Règlement Général sur la Protection des Données (RGPD), vous pouvez exercer vos droits d’accès, de rectification, de suppression ou d’opposition en nous contactant à louis.boisset@hotmail.fr.</small></p>
     </div>
     <script src="form.js"></script>
 </body>

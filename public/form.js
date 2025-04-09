@@ -1,10 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get email from URL parameters
+    
     const urlParams = new URLSearchParams(window.location.search);
+    // Get email from URL parameters and fill the input if any
     const email = urlParams.get('email');
-    console.log(email);
     if (email) {
         document.getElementById('userEmail').value = email;
+    }
+    // Get email from URL parameters and fill the input if any
+    const nom = urlParams.get('nom');
+    if (nom) {
+        document.getElementById('userName').value = nom;
     }
     // Conditional Logic for level questions
     const level = document.querySelectorAll('input[name="1.niveau"]');
@@ -231,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (checkboxes.length > 0) {
                     const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
                     if (checkedBoxes.length === 0) {
-                        const errorMessage = `Veuillez sélectionner au moins une option pour: ${questionTitle}`;
+                        const errorMessage = `Veuillez remplir la question: ${questionTitle}`;
                         showError(errorMessage);
                         throw new Error(errorMessage);
                     }
@@ -352,14 +357,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ecoActiveBtn) {
                 formattedData['6. Préférence viticulture raisonnée/biologique'] = ecoActiveBtn.dataset.value;
             }
+
+            // Add userName to formattedData
+            const userNameInput = document.getElementById('userName');
+            if (userNameInput && userNameInput.value) {
+                formattedData['X. Contact Nom'] = userNameInput.value;
+            }
             
-            // Add userEmail to formattedData if it has a value
+            // Add userEmail to formattedData
             const userEmailInput = document.getElementById('userEmail');
             if (userEmailInput && userEmailInput.value) {
-                formattedData['Email'] = userEmailInput.value;
+                formattedData['X. Contact Email'] = userEmailInput.value;
+            }
+
+            // Add consentement to formattedData
+            const consentement = document.getElementById('consentement');
+            if (userNameInput && userNameInput.value) {
+                formattedData['X. Accepte que ses données soient utilisées'] = consentement.value;
             }
             
             updateStatus('Analyse des résultats...');
+            // Log formatted data to console
+            console.log(formattedData);
             await new Promise(resolve => setTimeout(resolve, 2000));
             
             // Send data to server
@@ -393,12 +412,13 @@ document.addEventListener('DOMContentLoaded', () => {
             updateStatus('Une pré-selection est prête!');            
             await new Promise(resolve => setTimeout(resolve, 2000));
             
-            // Redirect to results page with submissionId and userEmail if available
-            const userEmailValue = document.getElementById('userEmail').value;
-            let redirectUrl = `results.html?submissionId=${data.submissionId}`;
-            if (userEmailValue) {
-                redirectUrl += `&email=${encodeURIComponent(userEmailValue)}`;
-            }
+            // Redirect to results page with submissionId
+            // const userEmailValue = document.getElementById('userEmail').value;
+            let redirectUrl = `results.html`;
+            redirectUrl += `?submissionId=${data.submissionId}`;
+            // if (userEmailValue) {
+            //     redirectUrl += `&email=${encodeURIComponent(userEmailValue)}`;
+            // }
             window.location.href = redirectUrl;
             
         } catch (error) {
@@ -408,8 +428,5 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingContainer.style.display = 'none';
             return;
         }
-        
-        // Log formatted data to console
-        console.log(formattedData);
     });
 });

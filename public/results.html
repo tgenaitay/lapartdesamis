@@ -4,35 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Part des Amis - Pre-selection</title>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
     <style>
     /* Overriding main style.css with subtle changes */        
     h2 {
         border-bottom: 0px;
         padding-bottom: 0px;
-    }
-    /* Add styles for the legend */
-    #legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 15px;
-        justify-content: center;
-    }
-    #legend span {
-        padding: 5px 10px;
-        border-radius: 4px;
-        color: white;
-        font-size: 14px;
-        transition: opacity 0.3s ease, transform 0.2s ease;
-    }
-    #legend span.muted {
-        opacity: 0.4;
-    }
-    #legend span.highlighted {
-        opacity: 1;
-        transform: scale(1.05);
     }
     #loading-container {
         height: 100vh;

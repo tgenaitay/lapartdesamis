@@ -132,8 +132,9 @@ Description: Styles for the La Part des Amis questionnaire and results pages.
        color: var(--alter);
        padding: 8px;
        border-radius: 4px;
-       width: 90%;
+       width: -webkit-fill-available;
        margin-top: 5px;
+       min-height: 25px;
    }
 
    input[type="text"]:focus-visible, input[type="email"]:focus-visible {
@@ -175,6 +176,12 @@ Description: Styles for the La Part des Amis questionnaire and results pages.
    
    button[type="submit"]:hover {
        transform: scale(1.05);
+   }
+
+   .mentions {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
    }
    
    /* ==========================================================================
@@ -531,3 +538,27 @@ Description: Styles for the La Part des Amis questionnaire and results pages.
    .form-feedback {
      color: var(--text);
    }
+
+   /* ==========================================================================
+      11. Media queries for responsivity
+      ========================================================================== */
+
+    /* mobile screens only */
+
+    @media only screen and (max-width: 767px) {
+
+        /* Text Inputs and Textareas */
+        input[type="text"],
+        textarea, input[type="email"] {
+            background: var(--bg);
+            font-family: var(--font-main);
+            border: 1px solid var(--text);
+            color: var(--alter);
+            padding: 8px;
+            border-radius: 4px;
+            width: -webkit-fill-available;
+            margin-top: 5px;
+            min-height: 25px;
+        }
+        
+    }
